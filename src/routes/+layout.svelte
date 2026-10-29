@@ -22,6 +22,7 @@
 			<a class="btn btn-sm rounded-3 text-uppercase" href="/">Главная</a>
 			<a class="btn btn-sm rounded-3 text-uppercase" href="/">Расписание</a>
 			<a class="btn btn-sm rounded-3 text-uppercase" href="/">О храме</a>
+			<a class="btn btn-sm rounded-3 text-uppercase" href="/admin">Admin</a>
 		</div>
 	</div>
 </div>
