@@ -27,5 +27,9 @@
 	"imports": {
 		"#lib": "./src/lib/index.js",
 		"#lib/*": "./src/lib/*"
+	},
+	"dependencies": {
+		"bootstrap": "^6.0.0-alpha.1",
+		"bootstrap-icons": "^1.13.2"
 	}
 }
