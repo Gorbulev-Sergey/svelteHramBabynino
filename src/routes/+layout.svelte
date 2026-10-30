@@ -14,10 +14,7 @@
 </svelte:head>
 
 <div class="sticky-top w-100">
-	<div
-		class="d-flex align-items-center px-4 py-2 bg-body bg-70"
-		style="backdrop-filter: blur(1em);"
-	>
+	<div class="d-flex align-items-center px-4 py-2 bg-2 bg-70" style="backdrop-filter: blur(1em);">
 		<div class="d-flex align-items-center gap-0 flex-wrap">
 			<a class="btn bg-transparent px-3" href="/">
 				Храм <b class="text-uppercase">Вознесения Господня</b>
