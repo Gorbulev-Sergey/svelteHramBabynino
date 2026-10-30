@@ -17,7 +17,7 @@
 </script>
 
 {#snippet pageTitle()}
-	<div class="px-4 text-uppercase fw-bold">
+	<div class="btn bg-transparent text-uppercase fw-bold px-3">
 		{@html title}
 	</div>
 {/snippet}

@@ -19,17 +19,21 @@
 		style="backdrop-filter: blur(1em);"
 	>
 		<div class="d-flex align-items-center gap-0 flex-wrap">
-			<a class="btn bg-transparent text-uppercase" href="/"><b>Храм</b> Вознесения Господня</a>
+			<a class="btn bg-transparent px-3" href="/">
+				Храм <b class="text-uppercase">Вознесения Господня</b>
+			</a>
 			{#if STORE.pageTitle}
-				<i class="bi bi-chevron-right"></i>
+				<div>
+					<i class="bi bi-chevron-right"></i>
+				</div>
 				{@render STORE.pageTitle?.()}
 			{/if}
 		</div>
 		<div class="flex-grow-1 d-flex align-items-center justify-content-end flex-wrap gap-1">
-			<a class="btn btn-sm rounded-3 text-uppercase" href="/">Главная</a>
-			<a class="btn btn-sm rounded-3 text-uppercase" href="/">Расписание</a>
-			<a class="btn btn-sm rounded-3 text-uppercase" href="/">О храме</a>
-			<a class="btn btn-sm rounded-3 text-uppercase" href="/admin">Admin</a>
+			<a class="btn btn-sm rounded-3" href="/">Главная</a>
+			<a class="btn btn-sm rounded-3" href="/">Расписание</a>
+			<a class="btn btn-sm rounded-3" href="/">О храме</a>
+			<a class="btn btn-sm rounded-3" href="/admin">Admin</a>
 		</div>
 	</div>
 </div>
