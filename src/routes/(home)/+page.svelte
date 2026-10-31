@@ -1,19 +1,20 @@
 <script lang="ts">
-	import PageTitle from '#lib/components/PageTitle.svelte';
 	import { getTags } from '#lib/remoutes/firebase.remote.ts';
 	import Column from '#lib/components/Column.svelte';
 	import { getPosts } from '#lib/remoutes/firebase.remote.ts';
 	import SubPanel from '#lib/components/SubPanel.svelte';
+	import PageTitle from '#lib/components/PageTitle.svelte';
 
 	let posts = $derived(await getPosts());
 </script>
 
-<PageTitle title="Главная страница" />
+<PageTitle>Главная страница</PageTitle>
+
 <SubPanel>
 	<div class="d-flex align-items-center gap-2 flex-wrap">
 		{#each await getTags() as tag}
-			<a class="badge bg-1 rounded-3 px-1" href={'#' + tag.name}>
-				{tag.name}
+			<a class="badge bg-2 bg-70 rounded-3 px-1" href={'#' + tag.name}>
+				#{tag.name}
 			</a>
 		{/each}
 	</div>

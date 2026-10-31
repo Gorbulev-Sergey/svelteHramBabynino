@@ -1,23 +1,12 @@
 <script lang="ts">
 	import { STORE } from '#lib/settings/store.svelte.ts';
-	import { onMount, onDestroy } from 'svelte';
+	import { onMount, onDestroy, type Snippet } from 'svelte';
 
-	interface IProps {
-		title?: string;
-	}
-
-	let { title }: IProps = $props();
-
+	let { children } = $props();
 	onMount(() => {
-		STORE.pageTitle = pageTitle;
+		STORE.pageTitle = children;
 	});
 	onDestroy(() => {
 		STORE.pageTitle = null;
 	});
 </script>
-
-{#snippet pageTitle()}
-	<div class="btn bg-transparent text-uppercase fw-bold px-3">
-		{@html title}
-	</div>
-{/snippet}
