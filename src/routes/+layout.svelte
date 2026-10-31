@@ -6,6 +6,15 @@
 	import { STORE } from '#lib/settings/store.svelte.ts';
 
 	let { children }: LayoutProps = $props();
+
+	function toggleTheme() {
+		let theme = document.querySelector('[data-bs-theme]');
+		theme?.setAttribute(
+			'data-bs-theme',
+			theme.getAttribute('data-bs-theme') == 'light' ? 'dark' : 'light'
+		);
+		cookieStore.set('theme', theme?.getAttribute('data-bs-theme') || 'light');
+	}
 </script>
 
 <svelte:head>
@@ -30,6 +39,9 @@
 				{/if}
 			</div>
 			<div class="flex-grow-1 d-flex align-items-center justify-content-end flex-wrap gap-1">
+				<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
+					<i class="bi bi-sun"></i>
+				</button>
 				<a class="btn btn-sm rounded-3 bg-transparent" href="/">Главная</a>
 				<a class="btn btn-sm rounded-3 bg-transparent" href="/">Расписание</a>
 				<a class="btn btn-sm rounded-3 bg-transparent" href="/">О храме</a>
@@ -50,3 +62,10 @@
 <div class="d-flex flex-column align-items-center w-100 bg-1 p-6" style="min-height: 10em;">
 	<div>Бабынино, храм Вознесения Господня</div>
 </div>
+
+<style>
+	/* Настройка цветов фона для светлой и темной темы */
+	:global(:root) {
+		--bs-bg-body: light-dark(var(--bs-white), var(--bs-gray-900));
+	}
+</style>
