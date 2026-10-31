@@ -14,7 +14,7 @@
 </svelte:head>
 
 <div class="sticky-top w-100">
-	<div class="d-flex align-items-center px-4 py-2 bg-2 bg-70" style="backdrop-filter: blur(1em);">
+	<div class="d-flex align-items-center px-4 py-2 bg-1 bg-70" style="backdrop-filter: blur(1em);">
 		<div class="d-flex align-items-center gap-0 flex-wrap">
 			<a class="btn bg-transparent px-3" href="/">
 				Храм <b class="text-uppercase">Вознесения Господня</b>
@@ -27,14 +27,19 @@
 			{/if}
 		</div>
 		<div class="flex-grow-1 d-flex align-items-center justify-content-end flex-wrap gap-1">
-			<a class="btn btn-sm rounded-3" href="/">Главная</a>
-			<a class="btn btn-sm rounded-3" href="/">Расписание</a>
-			<a class="btn btn-sm rounded-3" href="/">О храме</a>
-			<a class="btn btn-sm rounded-3" href="/admin">Admin</a>
+			<a class="btn btn-sm rounded-3 bg-transparent" href="/">Главная</a>
+			<a class="btn btn-sm rounded-3 bg-transparent" href="/">Расписание</a>
+			<a class="btn btn-sm rounded-3 bg-transparent" href="/">О храме</a>
+			<a class="btn btn-sm rounded-3 bg-transparent" href="/admin">Admin</a>
 		</div>
 	</div>
+	{#if STORE.subPanel}
+		<div class="px-6 pb-3 bg-1 bg-70" style="backdrop-filter: blur(1em);">
+			{@render STORE.subPanel?.()}
+		</div>
+	{/if}
 </div>
-<div class="container my-3" style="min-height: 100dvh;">
+<div class="container my-7" style="min-height: 100dvh;">
 	{@render children()}
 </div>
 
