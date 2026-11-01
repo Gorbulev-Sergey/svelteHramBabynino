@@ -1,10 +1,16 @@
 <script lang="ts">
-	import favicon from '#lib/assets/favicon.svg';
+	import favicon from '#lib/assets/favicon.png';
 	import type { LayoutProps } from './$types';
 	import 'bootstrap/dist/css/bootstrap.min.css';
 	import 'bootstrap-icons/font/bootstrap-icons.min.css';
 	import { STORE } from '#lib/settings/store.svelte.ts';
+	import type { IRoute } from '#lib/models/Route.ts';
 
+	const routes: IRoute[] = [
+		{ name: 'Главная', url: '/' },
+		{ name: 'Расписание', url: '/' },
+		{ name: '<i class="bi bi-person-badge fs-lg"></i>', url: '/admin' }
+	];
 	let { children }: LayoutProps = $props();
 
 	function toggleTheme() {
@@ -38,14 +44,15 @@
 					</div>
 				{/if}
 			</div>
-			<div class="flex-grow-1 d-flex align-items-center justify-content-end flex-wrap gap-1">
+			<div class="flex-grow-1 d-flex align-items-center justify-content-end flex-wrap gap-0">
 				<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
 					<i class="bi bi-sun"></i>
 				</button>
-				<a class="btn btn-sm rounded-3 bg-transparent" href="/">Главная</a>
-				<a class="btn btn-sm rounded-3 bg-transparent" href="/">Расписание</a>
-				<a class="btn btn-sm rounded-3 bg-transparent" href="/">О храме</a>
-				<a class="btn btn-sm rounded-3 bg-transparent" href="/admin">Admin</a>
+				{#each routes as route}
+					<a class="btn btn-sm rounded-3 bg-transparent text-uppercase" href={route.url}
+						>{@html route.name}</a
+					>
+				{/each}
 			</div>
 		</div>
 		{#if STORE.subPanel}
