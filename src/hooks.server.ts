@@ -1,3 +1,4 @@
+import type { TRole } from '#lib/models/Role.ts';
 import { adminAuth } from '#lib/settings/firebase-admin.ts';
 import type { Handle } from '@sveltejs/kit/hooks';
 
@@ -8,16 +9,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (sessionCookie) {
 		try {
 			const decoded = await adminAuth.verifySessionCookie(sessionCookie, true);
-			const name = (decoded as any).name;
-			const picture = (decoded as any).picture;
-			const role = (decoded as any).role || 'admin';
-
 			event.locals.user = {
 				uid: decoded.uid,
-				email: decoded.email || '',
-				name,
-				picture,
-				role
+				email: decoded.email,
+				name: decoded.name,
+				picture: decoded.picture,
+				role: decoded.role
 			};
 		} catch {
 			// Кука невалидна — пользователь не авторизован
