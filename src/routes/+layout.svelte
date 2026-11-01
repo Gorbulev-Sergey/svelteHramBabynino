@@ -23,11 +23,11 @@
 </svelte:head>
 
 <div class="sticky-top w-100">
-	<div class="d-flex flex-column px-4 py-2 bg-body bg-70" style="backdrop-filter: blur(1em);">
+	<div class="d-flex flex-column px-4 py-2 bg-2 bg-70" style="backdrop-filter: blur(1em);">
 		<div class="d-flex align-items-center">
 			<div class="d-flex align-items-center gap-0 flex-wrap">
 				<a class="btn bg-transparent px-3" href="/">
-					Храм <b class="text-uppercase">Вознесения Господня</b>
+					Храм <b class="">Вознесения Господня</b>
 				</a>
 				{#if STORE.pageTitle}
 					<div>
@@ -49,23 +49,23 @@
 			</div>
 		</div>
 		{#if STORE.subPanel}
-			<div class="px-3 pt-3">
+			<div class="px-3 py-2">
 				{@render STORE.subPanel?.()}
 			</div>
 		{/if}
 	</div>
 </div>
-<div class="container my-7" style="min-height: 100dvh;">
+<div class="container my-8" style="min-height: 100dvh;">
 	{@render children()}
 </div>
 
-<div class="d-flex flex-column align-items-center w-100 bg-1 p-6" style="min-height: 10em;">
+<div class="d-flex flex-column align-items-center w-100 bg-2 bg-70 p-6" style="min-height: 10em;">
 	<div>Бабынино, храм Вознесения Господня</div>
 </div>
 
 <style>
 	/* Настройка цветов фона для светлой и темной темы */
 	:global(:root) {
-		--bs-bg-body: light-dark(var(--bs-white), var(--bs-gray-900));
+		--bs-bg-body: light-dark(var(--bs-white), var(--bs-gray-800));
 	}
 </style>

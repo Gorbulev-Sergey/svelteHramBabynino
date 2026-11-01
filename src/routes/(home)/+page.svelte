@@ -15,10 +15,18 @@
 	);
 </script>
 
-<PageTitle>Главная страница</PageTitle>
+<PageTitle>
+	<div class="d-flex align-items-center gap-3">
+		<div>Главная страница</div>
+		<div>
+			<i class="bi bi-chevron-right"></i>
+		</div>
+		<div class="bg-3 rounded-3 px-2">{selectedTag.description}</div>
+	</div>
+</PageTitle>
 
 <SubPanel>
-	<div class="d-flex align-items-center gap-2 flex-wrap">
+	<div class="d-flex align-items-center justify-content-start gap-2 flex-wrap">
 		{#each tags as tag}
 			<button class="badge rounded-3 px-1" onclick={() => (selectedTag = tag)}>
 				#{tag.name}
@@ -44,29 +52,37 @@
 						{#if post.cover.video?.includes('https://rutube.ru')}
 							<iframe
 								title=""
-								class="w-100 ratio-16x9 rounded-3"
+								class="w-100 ratio-16x9 rounded-3 border-0"
 								src={post.cover.video.replace('/video/', '/play/embed/')}
+								allowfullscreen
 							></iframe>
 						{/if}
 						{#if post.cover.video?.includes('https://youtu.be')}
 							<iframe
 								title=""
-								class="w-100 ratio-16x9 rounded-3"
+								class="w-100 ratio-16x9 rounded-3 border-0"
 								src={post.cover.video.replace('/youtu.be/', '/www.youtube.com/embed/')}
+								allowfullscreen
 							></iframe>
 						{/if}
 						{#if post.cover.video?.includes('https://vkvideo.ru')}
 							<iframe
 								title=""
-								class="w-100 ratio-16x9 rounded-3"
+								class="w-100 ratio-16x9 rounded-3 border-0"
 								src={post.cover.video
 									.replace('vkvideo.ru/video', 'vkvideo.ru/videoext.php?oid=')
 									.replace('_', '&id=')
 									.replace('videoext', 'video_ext')}
+								allowfullscreen
 							></iframe>
 						{/if}
 						{#if post.cover.video?.includes('https://vk.com')}
-							<iframe title="" class="w-100 ratio-16x9 rounded-3" src={post.cover.video}></iframe>
+							<iframe
+								title=""
+								class="w-100 ratio-16x9 rounded-3 border-0"
+								src={post.cover.video}
+								allowfullscreen
+							></iframe>
 						{/if}
 					{/if}
 
