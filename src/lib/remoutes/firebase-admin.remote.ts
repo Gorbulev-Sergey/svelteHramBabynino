@@ -45,6 +45,13 @@ export const getUsers = query(async () => {
 	}));
 });
 
+export const changeUserName = command(
+	v.object({ uid: v.string(), name: v.string() }),
+	async (data) => {
+		await adminAuth.updateUser(data.uid, { displayName: data.name });
+	}
+);
+
 export const addRoleToUser = command(
 	v.object({ uid: v.string(), role: RoleSchema }),
 	async (data) => {
