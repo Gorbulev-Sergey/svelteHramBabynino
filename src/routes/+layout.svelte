@@ -61,7 +61,7 @@
 
 				<button
 					title=""
-					class="btn-icon btn-sm rounded-3"
+					class="btn-icon btn-sm border-0 rounded-3"
 					data-bs-toggle="menu"
 					aria-expanded="false"
 				>
