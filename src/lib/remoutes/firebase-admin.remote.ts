@@ -1,8 +1,8 @@
 import { adminAuth } from '#lib/settings/firebase-admin.ts';
-import { getRequestEvent, query } from '$app/server';
+import { command, getRequestEvent, query } from '$app/server';
 import * as v from 'valibot';
 
-export const logInSession = query(v.string(), async (idToken) => {
+export const logInSession = command(v.string(), async (idToken) => {
 	const { cookies } = getRequestEvent();
 
 	try {
@@ -18,14 +18,10 @@ export const logInSession = query(v.string(), async (idToken) => {
 			secure: process.env.NODE_ENV === 'production',
 			maxAge: 5 * 24 * 60 * 60
 		});
-
-		return { status: 200 };
-	} catch {
-		return { status: 401 };
-	}
+	} catch {}
 });
 
-export const logOutSession = query(async () => {
+export const logOutSession = command(async () => {
 	const { cookies } = getRequestEvent();
 	try {
 		cookies.delete('session', {
@@ -33,9 +29,5 @@ export const logOutSession = query(async () => {
 			sameSite: 'strict',
 			secure: process.env.NODE_ENV === 'production'
 		});
-
-		return { status: 200 };
-	} catch (error) {
-		return { status: 401 };
-	}
+	} catch (error) {}
 });

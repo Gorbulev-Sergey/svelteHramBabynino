@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { logInSession, logOutSession } from '#lib/remoutes/firebase-admin.remote.ts';
 	import { auth } from '#lib/settings/firebase.ts';
 	import { goto, refreshAll } from '$app/navigation';
 	import { getIdToken, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
@@ -12,28 +13,18 @@
 				const result = await signInWithPopup(auth, new GoogleAuthProvider());
 				const idToken = await getIdToken(result.user);
 
-				console.log(result.user);
-
-				await fetch('/api/session', {
-					method: 'POST',
-					headers: { 'Content-Type': 'application/json' },
-					body: JSON.stringify({ idToken })
-				});
+				await logInSession(idToken);
 				await refreshAll();
 				goto('/');
 			}}>Войти с помощью Google</button
 		>
 		<button
 			class="btn btn-dark text-light"
-			onclick={() => {
-				auth.signOut().then(async (result) => {
-					await fetch('/api/logout', {
-						method: 'POST',
-						credentials: 'include'
-					});
-					await refreshAll();
-					goto('/');
-				});
+			onclick={async () => {
+				await auth.signOut();
+				await logOutSession();
+				await refreshAll();
+				goto('/');
 			}}>Выйти</button
 		>
 	</div>
