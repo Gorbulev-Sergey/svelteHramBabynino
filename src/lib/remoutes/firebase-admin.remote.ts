@@ -1,6 +1,7 @@
 import { RoleSchema } from '#lib/models/Role.ts';
 import { adminAuth } from '#lib/settings/firebase-admin.ts';
 import { command, getRequestEvent, query } from '$app/server';
+import type { User } from 'firebase/auth';
 import * as v from 'valibot';
 
 export const logInSession = command(v.string(), async (idToken) => {
@@ -31,6 +32,17 @@ export const logOutSession = command(async () => {
 			secure: process.env.NODE_ENV === 'production'
 		});
 	} catch (error) {}
+});
+
+export const getUsers = query(async () => {
+	const listUsersResult = await adminAuth.listUsers(1000); // макс. 1000 за раз
+	return listUsersResult.users.map((user) => ({
+		uid: user.uid,
+		email: user.email,
+		name: user.displayName,
+		picture: user.photoURL,
+		customClaims: user.customClaims
+	}));
 });
 
 export const addRoleToUser = command(
