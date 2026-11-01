@@ -1,11 +1,29 @@
-import { db } from '#lib/settings/firebase.ts';
+import { adminAuth } from '#lib/settings/firebase-admin.ts';
 import type { Handle } from '@sveltejs/kit/hooks';
-import { get, ref } from 'firebase/database';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.user = { name: 'Сержик', role: 'admin' };
-	// event.locals.tags = await (await get(ref(db, '/tags'))).val();
+	const sessionCookie = event.cookies.get('session') || '';
+	event.locals.user = null;
 
-	const response = await resolve(event);
-	return response;
+	if (sessionCookie) {
+		try {
+			const decoded = await adminAuth.verifySessionCookie(sessionCookie, true);
+			const name = (decoded as any).name;
+			const picture = (decoded as any).picture;
+			const role = (decoded as any).role || '';
+
+			event.locals.user = {
+				uid: decoded.uid,
+				email: decoded.email || '',
+				name,
+				picture,
+				role
+			};
+		} catch {
+			// Кука невалидна — пользователь не авторизован
+			event.cookies.delete('session', { path: '/' });
+		}
+	}
+
+	return resolve(event);
 };

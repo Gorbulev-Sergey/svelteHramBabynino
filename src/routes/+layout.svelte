@@ -6,12 +6,14 @@
 	import { STORE } from '#lib/settings/store.svelte.ts';
 	import type { IRoute } from '#lib/models/Route.ts';
 
-	const routes: IRoute[] = [
+	let { children, data }: LayoutProps = $props();
+
+	const routes: IRoute[] = $derived([
 		{ name: 'Главная', url: '/' },
 		{ name: 'Расписание', url: '/' },
+		{ name: data.user?.name || 'Auth', url: '/auth' },
 		{ name: '<i class="bi bi-person-badge fs-lg"></i>', url: '/admin' }
-	];
-	let { children }: LayoutProps = $props();
+	]);
 
 	function toggleTheme() {
 		let theme = document.querySelector('[data-bs-theme]');
