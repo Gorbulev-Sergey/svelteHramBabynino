@@ -48,27 +48,29 @@
 					</div>
 				{/if}
 			</div>
-			<div class="flex-grow-1 d-flex align-items-center justify-content-end flex-wrap gap-0">
+			<div class="flex-grow-1 d-flex align-items-center justify-content-end flex-wrap gap-1">
 				<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
 					<i class="bi bi-sun"></i>
 				</button>
+
 				{#each routes as route}
-					<a class="btn btn-sm rounded-3 bg-transparent text-uppercase" href={route.url}
+					<a class="btn btn-sm rounded-3 bg-transparent text-uppercase px-2" href={route.url}
 						>{@html route.name}</a
 					>
 				{/each}
+
 				<button
 					title=""
-					class="btn-icon btn-sm btn-sm border-0"
+					class="btn-icon btn-sm rounded-3"
 					data-bs-toggle="menu"
 					aria-expanded="false"
 				>
 					{#if data.user && data.user.picture}
 						<span class="avatar avatar-xs">
-							<img class="avatar-img rounded-3" src={data.user.picture} alt="mdo" />
+							<img class="avatar-img rounded-3" src={data.user.picture} alt="" />
 						</span>
 					{:else}
-						<i class="bi bi-person-badge fs-lg"></i>
+						<i class="bi bi-person"></i>
 					{/if}
 				</button>
 				<div class="menu border-0 shadow-sm rounded-3">
