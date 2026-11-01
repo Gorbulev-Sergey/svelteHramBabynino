@@ -5,15 +5,17 @@
 	import 'bootstrap-icons/font/bootstrap-icons.min.css';
 	import { STORE } from '#lib/settings/store.svelte.ts';
 	import type { IRoute } from '#lib/models/Route.ts';
+	import { auth } from '#lib/settings/firebase.ts';
+	import { logInSession, logOutSession } from '#lib/remoutes/firebase-admin.remote.ts';
+	import { goto, refreshAll } from '$app/navigation';
+	import { signInWithPopup, GoogleAuthProvider, getIdToken } from 'firebase/auth';
 
 	let { children, data }: LayoutProps = $props();
 
-	const routes: IRoute[] = $derived([
+	const routes: IRoute[] = [
 		{ name: 'Главная', url: '/' },
-		{ name: 'Расписание', url: '/' },
-		{ name: data.user?.name || 'Auth', url: '/auth' },
-		{ name: '<i class="bi bi-person-badge fs-lg"></i>', url: '/admin' }
-	]);
+		{ name: 'Расписание', url: '/' }
+	];
 
 	function toggleTheme() {
 		let theme = document.querySelector('[data-bs-theme]');
@@ -55,6 +57,47 @@
 						>{@html route.name}</a
 					>
 				{/each}
+				<button
+					title=""
+					class="btn-icon btn-sm btn-sm border-0"
+					data-bs-toggle="menu"
+					aria-expanded="false"
+				>
+					{#if data.user && data.user.picture}
+						<span class="avatar avatar-xs">
+							<img class="avatar-img rounded-3" src={data.user.picture} alt="mdo" />
+						</span>
+					{:else}
+						<i class="bi bi-person-badge fs-lg"></i>
+					{/if}
+				</button>
+				<div class="menu border-0 shadow-sm rounded-3">
+					{#if data.user && data.user.role === 'admin'}
+						<a class="menu-item rounded-3" href="/admin">Панель администратора</a>
+					{/if}
+					{#if data.user}
+						<button
+							class="menu-item rounded-3"
+							onclick={async () => {
+								await auth.signOut();
+								await logOutSession();
+								await refreshAll();
+								goto('/');
+							}}>Выйти</button
+						>
+					{:else}
+						<button
+							class="menu-item rounded-3"
+							onclick={async () => {
+								const result = await signInWithPopup(auth, new GoogleAuthProvider());
+								const idToken = await getIdToken(result.user);
+
+								await logInSession(idToken);
+								await refreshAll();
+							}}>Войти через Google</button
+						>
+					{/if}
+				</div>
 			</div>
 		</div>
 		{#if STORE.subPanel}

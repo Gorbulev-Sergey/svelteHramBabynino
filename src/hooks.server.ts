@@ -10,7 +10,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			const decoded = await adminAuth.verifySessionCookie(sessionCookie, true);
 			const name = (decoded as any).name;
 			const picture = (decoded as any).picture;
-			const role = (decoded as any).role || '';
+			const role = (decoded as any).role || 'admin';
 
 			event.locals.user = {
 				uid: decoded.uid,
