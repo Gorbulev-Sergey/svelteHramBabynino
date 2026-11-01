@@ -1,4 +1,3 @@
-import type { TRole } from '#lib/models/Role.ts';
 import { adminAuth } from '#lib/settings/firebase-admin.ts';
 import type { Handle } from '@sveltejs/kit/hooks';
 

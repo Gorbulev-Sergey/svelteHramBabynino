@@ -10,7 +10,7 @@ declare global {
 				email?: string;
 				name?: string;
 				picture?: string | null;
-				role?: TRole | null;
+				role?: TRole;
 			} | null;
 		}
 		// interface PageData {}
