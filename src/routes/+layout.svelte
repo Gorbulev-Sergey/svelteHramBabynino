@@ -9,6 +9,7 @@
 	import { logInSession, logOutSession } from '#lib/remoutes/firebase-admin.remote.ts';
 	import { goto, refreshAll } from '$app/navigation';
 	import { signInWithPopup, GoogleAuthProvider, getIdToken } from 'firebase/auth';
+	import { Toaster } from '@gorbulevsv/toaster';
 
 	let { children, data }: LayoutProps = $props();
 
@@ -116,6 +117,8 @@
 <div class="d-flex flex-column align-items-center w-100 bg-2 bg-70 p-6" style="min-height: 10em;">
 	<div>Бабынино, храм Вознесения Господня</div>
 </div>
+
+<Toaster />
 
 <style>
 	/* Настройка цветов фона для светлой и темной темы */

@@ -1,7 +1,7 @@
 import { RoleSchema } from '#lib/models/Role.ts';
 import { adminAuth } from '#lib/settings/firebase-admin.ts';
 import { command, getRequestEvent, query } from '$app/server';
-import type { User } from 'firebase/auth';
+import { toast } from '@gorbulevsv/toaster';
 import * as v from 'valibot';
 
 export const logInSession = command(v.string(), async (idToken) => {
@@ -56,5 +56,6 @@ export const addRoleToUser = command(
 	v.object({ uid: v.string(), role: RoleSchema }),
 	async (data) => {
 		await adminAuth.setCustomUserClaims(data.uid, { role: data.role });
+		toast({ title: 'Сообщение', content: 'Роль успешно изменена!', bg: 'success', opacity: '10' });
 	}
 );

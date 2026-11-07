@@ -29,6 +29,8 @@
 		"#lib/*": "./src/lib/*"
 	},
 	"dependencies": {
+		"@gorbulevsv/table": "^0.0.16",
+		"@gorbulevsv/toaster": "^0.0.12",
 		"bootstrap": "^6.0.0-alpha.1",
 		"bootstrap-icons": "^1.13.2",
 		"firebase": "^13.1.0",
