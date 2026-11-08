@@ -9,14 +9,17 @@
 		users.map((u) => {
 			const { uid, email, name, picture, customClaims, ...rest } = u; // убираем uid
 			return {
+				picture: {
+					snippet: pictureSnippet,
+					url: picture
+				},
 				name,
-				photo: userPicture,
 				email,
-				...rest,
-				role: customClaims?.role,
-				роль: roleSnippet,
-				picture,
-				uid
+				role: {
+					snippet: roleSnippet,
+					uid: uid,
+					value: customClaims?.role
+				}
 			};
 		})
 	);
@@ -24,15 +27,17 @@
 	let { data } = $props();
 </script>
 
-{#snippet userPicture(ob: { picture: string })}
-	<img class="img-fluid rounded-3" src={ob.picture} alt="" />
+{#snippet pictureSnippet(obj: { picture: { url?: string } })}
+	<div class="d-flex flex-column gap-1 rounded-3 overflow-hidden">
+		<img class="img-fluid rounded-3" src={obj.picture.url} alt="" />
+	</div>
 {/snippet}
 
-{#snippet roleSnippet(ob: { uid: string; role: TRole | null })}
+{#snippet roleSnippet(obj: { role: { uid: string; value: TRole | null } })}
 	<div>
 		<button title="" class="btn btn-xs rounded-3" data-bs-toggle="menu">
 			<div class="d-flex align-items-center gap-1">
-				<b>{ob.role || 'нет'}</b>
+				<b>{obj.role.value || 'нет'}</b>
 				<i class="bi bi-chevron-expand"></i>
 			</div>
 		</button>
@@ -41,7 +46,7 @@
 				<button
 					class="menu-item rounded-3"
 					onclick={async () => {
-						await addRoleToUser({ uid: ob.uid, role: role });
+						await addRoleToUser({ uid: obj.role.uid, role: role });
 						window.location.href = '/admin/users';
 					}}>{role || 'нет'}</button
 				>
