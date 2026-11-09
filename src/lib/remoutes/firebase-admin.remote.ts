@@ -45,17 +45,26 @@ export const getUsers = query(async () => {
 	}));
 });
 
-export const changeUserName = command(
+export const changeUserName = query(
 	v.object({ uid: v.string(), name: v.string() }),
 	async (data) => {
-		await adminAuth.updateUser(data.uid, { displayName: data.name });
+		try {
+			await adminAuth.updateUser(data.uid, { displayName: data.name });
+			return { status: 'ok' };
+		} catch (error) {
+			return { status: 'error' };
+		}
 	}
 );
 
-export const addRoleToUser = command(
+export const addRoleToUser = query(
 	v.object({ uid: v.string(), role: RoleSchema }),
 	async (data) => {
-		await adminAuth.setCustomUserClaims(data.uid, { role: data.role });
-		toast({ title: 'Сообщение', content: 'Роль успешно изменена!', bg: 'success', opacity: '10' });
+		try {
+			await adminAuth.setCustomUserClaims(data.uid, { role: data.role });
+			return { status: 'ok' };
+		} catch (error) {
+			return { status: 'error' };
+		}
 	}
 );

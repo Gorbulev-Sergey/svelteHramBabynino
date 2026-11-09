@@ -34,7 +34,7 @@
 </svelte:head>
 
 <div class="sticky-top w-100">
-	<div class="d-flex flex-column px-4 py-2 bg-2 bg-70" style="backdrop-filter: blur(1em);">
+	<div class="d-flex flex-column px-4 py-2 bg-1 bg-70" style="backdrop-filter: blur(1em);">
 		<div class="d-flex align-items-center">
 			<div class="d-flex align-items-center gap-0 flex-wrap">
 				<a class="btn bg-transparent px-3" href="/">
@@ -114,7 +114,7 @@
 	{@render children()}
 </div>
 
-<div class="d-flex flex-column align-items-center w-100 bg-2 bg-70 p-6" style="min-height: 10em;">
+<div class="d-flex flex-column align-items-center w-100 bg-1 bg-70 p-6" style="min-height: 10em;">
 	<div>Бабынино, храм Вознесения Господня</div>
 </div>
 
