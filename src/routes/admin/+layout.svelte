@@ -6,7 +6,8 @@
 
 	const routes: IRoute[] = [
 		{ name: 'Публикации', url: '/admin' },
-		{ name: 'Пользователи', url: '/admin/users' }
+		{ name: 'Пользователи', url: '/admin/users' },
+		{ name: 'Теги', url: '/admin/tags' }
 	];
 
 	let { children } = $props();

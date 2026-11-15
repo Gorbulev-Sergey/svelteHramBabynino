@@ -5,11 +5,11 @@
 	import SubPanel from '#lib/components/SubPanel.svelte';
 	import PageTitle from '#lib/components/PageTitle.svelte';
 
-	let tags = $derived(await getTags());
-	let posts = $derived(await getPosts());
-	let selectedTag = $state(tags.find((t) => t.name === 'главное'));
+	let tags = $derived(getTags());
+	let posts = $derived(getPosts());
+	let selectedTag = $derived((await tags).find((t) => t.name === 'главное'));
 	let filteredPosts = $derived(
-		[...Object.values(posts)].filter(
+		[...Object.values(await posts)].filter(
 			(p) => p.published && !p.pinned && p.tags.some((t) => t.name === selectedTag.name)
 		)
 	);
@@ -27,7 +27,7 @@
 
 <SubPanel>
 	<div class="d-flex align-items-center justify-content-start gap-2 flex-wrap">
-		{#each tags as tag}
+		{#each await tags as tag}
 			<button class="badge rounded-3 px-1" onclick={() => (selectedTag = tag)}>
 				#{tag.name}
 			</button>

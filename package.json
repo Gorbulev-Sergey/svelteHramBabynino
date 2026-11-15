@@ -17,6 +17,7 @@
 		"@sveltejs/adapter-auto": "^8.0.0",
 		"@sveltejs/kit": "^3.0.0",
 		"@sveltejs/vite-plugin-svelte": "^7.2.0",
+		"@types/node": "^26.6.6",
 		"prettier": "^3.8.3",
 		"prettier-plugin-svelte": "^4.1.0",
 		"svelte": "^5.57.1",
@@ -29,7 +30,7 @@
 		"#lib/*": "./src/lib/*"
 	},
 	"dependencies": {
-		"@gorbulevsv/table": "^0.0.20",
+		"@gorbulevsv/table": "^0.0.22",
 		"@gorbulevsv/toaster": "^0.0.13",
 		"bootstrap": "^6.0.0-alpha.1",
 		"bootstrap-icons": "^1.13.2",
