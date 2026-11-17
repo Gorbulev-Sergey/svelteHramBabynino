@@ -9,6 +9,8 @@
 	import { getIdToken, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 	import { goto, refreshAll } from '$app/navigation';
 	import type { LayoutProps } from './$types';
+	import ButtonIcon from './ButtonIcon.svelte';
+	import { fade } from 'svelte/transition';
 
 	interface IProps {
 		title?: Snippet | null;
@@ -28,7 +30,7 @@
 		cookieStore.set('theme', theme?.getAttribute('data-bs-theme') || 'light');
 	}
 
-	let sidebar = $state({ width: 0, height: 100 });
+	let sidebar = $state({ width: 0, height: 100, isOpen: true });
 
 	let { title, subTitle, menu, children, footer, data }: IProps = $props();
 </script>
@@ -40,6 +42,7 @@
 
 <div class="w-100">
 	<aside
+		transition:fade
 		bind:clientWidth={sidebar.width}
 		class="position-fixed bg-2 shadow-sm"
 		style="height: {sidebar.height}dvh;"
@@ -49,13 +52,21 @@
 			style="backdrop-filter: blur(1em);"
 		>
 			<div class="d-flex align-items-center">
-				<a class="btn bg-transparent rounded-3 text-uppercase text-start" href="/admin">
-					<div class="w-100 fw-bold">Панель администратора</div>
-				</a>
-				<button title="Свернуть/Развернуть панель" class="btn rounded-3">
-					<i class="bi bi-arrows-collapse-vertical"></i>
+				{#if sidebar.isOpen}
+					<a class="btn bg-transparent rounded-3 text-uppercase text-start" href="/admin">
+						<div class="w-100 fw-bold">Панель администратора</div>
+					</a>
+				{/if}
+
+				<button
+					title="Свернуть/Развернуть панель"
+					class="btn rounded-3"
+					onclick={() => (sidebar.isOpen = !sidebar.isOpen)}
+				>
+					<i class="bi bi-arrows-{sidebar.isOpen ? 'collapse' : 'expand'}-vertical"></i>
 				</button>
 			</div>
+			<hr />
 
 			<div class="d-flex flex-column flex-wrap gap-1">
 				{#if menu}
@@ -64,13 +75,17 @@
 			</div>
 
 			<div class="flex-grow-1 d-flex flex-column justify-content-end h-100">
-				<div class="d-flex align-items-center justify-content-between">
-					<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
-						<i class="bi bi-sun"></i>
-					</button>
-					<a title="Вернуться на сайт" class="btn btn-sm rounded-3" href="/">
-						<i class="bi bi-box-arrow-left"></i>
-					</a>
+				<div
+					class="d-flex {sidebar.isOpen
+						? ''
+						: 'flex-column'} align-items-center justify-content-between gap-1"
+				>
+					<ButtonIcon
+						text="Вернуться на сайт"
+						icon="<i class='bi bi-box-arrow-left'></i>"
+						href="/"
+						isOpen={sidebar.isOpen}
+					/>
 				</div>
 			</div>
 		</div>
@@ -81,7 +96,10 @@
 				{#if title}
 					{@render title?.()}
 				{/if}
-				<nav class="flex-grow-1 d-flex align-items-center justify-content-end">
+				<nav class="flex-grow-1 d-flex align-items-center gap-1 justify-content-end">
+					<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
+						<i class="bi bi-sun"></i>
+					</button>
 					<button
 						title=""
 						class="btn-icon btn-sm border-0 rounded-3"

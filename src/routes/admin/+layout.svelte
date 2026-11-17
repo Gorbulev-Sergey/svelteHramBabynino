@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ButtonIcon from '#lib/components/ButtonIcon.svelte';
 	import Layout1 from '#lib/components/Layout1.svelte';
 	import type { IRoute } from '#lib/models/Route.ts';
 	import { STORE } from '#lib/settings/store.svelte.ts';
@@ -6,7 +7,7 @@
 
 	const routes: IRoute[] = [
 		{ name: 'Публикации', url: '/admin', icon: '<i class="bi bi-newspaper"></i>' },
-		{ name: 'Пользователи', url: '/admin/users', icon: '<i class="bi bi-table"></i>' },
+		{ name: 'Пользователи', url: '/admin/users', icon: '<i class="bi bi-people"></i>' },
 		{ name: 'Теги', url: '/admin/tags', icon: '<i class="bi bi-bookmarks"></i>' }
 	];
 
@@ -24,7 +25,9 @@
 {#snippet menu()}
 	<div class="d-flex flex-column gap-1 flex-wrap">
 		{#each routes as route}
-			<a class="btn rounded-3 text-start" href={route.url}>
+			<ButtonIcon text={route.name} icon={route.icon} href={route.url} isOpen={false} />
+
+			<!-- <a class="btn rounded-3 text-start" href={route.url}>
 				<div class="w-100 d-flex align-items-baseline gap-2">
 					{#if route.icon}
 						{@html route.icon}
@@ -33,7 +36,7 @@
 						{route.name}
 					</div>
 				</div>
-			</a>
+			</a> -->
 		{/each}
 	</div>
 {/snippet}
