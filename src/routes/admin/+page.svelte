@@ -1,24 +1,17 @@
 <script lang="ts">
 	import PageTitle from '#lib/components/PageTitle.svelte';
-	import { db } from '#lib/settings/firebase.ts';
-	import { Table } from '@gorbulevsv/table';
-	import { onValue, ref } from 'firebase/database';
-	import { onMount } from 'svelte';
+	import SubPanel from '#lib/components/SubPanel.svelte';
+	import { getPosts, getTags } from '#lib/remoutes/firebase.remote.ts';
 
-	let posts = $state<Record<string, any>>();
-	let glavnoe = $derived(
-		Object.values(posts || []).filter(
-			(p) => p.published && p.tags.some((t) => t.name === 'о нашем храме')
+	let posts = $derived(getPosts());
+	let tags = $derived(getTags());
+
+	let selectedTag = $derived((await tags).find((t) => t.name === 'главное'));
+	let filteredPosts = $derived(
+		[...Object.values(await posts)].filter(
+			(p) => p.published && !p.pinned && p.tags.some((t) => t.name === selectedTag.name)
 		)
 	);
-
-	onMount(async () => {
-		onValue(ref(db, 'posts'), (r) => {
-			if (r.exists()) posts = r.val();
-		});
-	});
-
-	$inspect(glavnoe);
 </script>
 
 <PageTitle>
@@ -31,18 +24,27 @@
 	</div>
 </PageTitle>
 
-{#if posts}
-	<div class="row row-cols-1 g-2">
-		{#each glavnoe as item}
-			<div class="col h-100">
-				<div class="d-flex gap-5 bg-1 rounded-3 px-2 py-1">
-					<div>{new Date(item.created).toLocaleDateString()}</div>
-					<div class="vr"></div>
-					<div>{@html item.title}</div>
-					<div class="vr"></div>
+<SubPanel>
+	<div class="d-flex align-items-center justify-content-start flex-wrap gap-1">
+		{#each await tags as tag}
+			<button class="badge rounded-3 px-1" onclick={() => (selectedTag = tag)}>
+				#{tag.name}
+			</button>
+		{/each}
+	</div>
+</SubPanel>
+
+<div class="row row-cols-1 g-2">
+	{#each filteredPosts as item}
+		<div class="col h-100">
+			<div class="d-flex gap-5 bg-1 rounded-3 px-2 py-1">
+				<div>{new Date(item.created).toLocaleDateString()}</div>
+				<div class="vr"></div>
+				<div class="flex-grow-1 d-flex align-items-center gap-5 justify-content-between">
+					<div class=" text-uppercase">{@html item.title}</div>
 					<div>{@html item.description}</div>
 				</div>
 			</div>
-		{/each}
-	</div>
-{/if}
+		</div>
+	{/each}
+</div>

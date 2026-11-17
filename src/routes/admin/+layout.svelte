@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Layout from '#lib/components/Layout.svelte';
+	import Layout1 from '#lib/components/Layout1.svelte';
 	import type { IRoute } from '#lib/models/Route.ts';
 	import { STORE } from '#lib/settings/store.svelte.ts';
 	import { page } from '$app/state';
@@ -10,15 +10,11 @@
 		{ name: 'Теги', url: '/admin/tags' }
 	];
 
-	let { children } = $props();
+	let { children, data } = $props();
 </script>
 
 {#snippet title()}
 	<div class="d-flex align-items-center gap-2">
-		<div class=" text-uppercase">Панель администратора</div>
-		<div>
-			<i class="bi bi-chevron-right"></i>
-		</div>
 		<div class="bg-3 rounded-3 px-2">{routes.find((r) => r.url === page.route.id)?.name}</div>
 	</div>
 {/snippet}
@@ -31,6 +27,6 @@
 	</div>
 {/snippet}
 
-<Layout {title} subTitle={STORE.subPanel} {menu}>
+<Layout1 {title} subTitle={STORE.subPanel} {menu} {data}>
 	{@render children?.()}
-</Layout>
+</Layout1>
