@@ -44,7 +44,7 @@
 	<aside
 		transition:fade
 		bind:clientWidth={sidebar.width}
-		class="position-fixed bg-2 shadow-sm"
+		class="position-fixed bg-3 shadow-sm"
 		style="height: {sidebar.height}dvh;"
 	>
 		<div
@@ -60,13 +60,12 @@
 
 				<button
 					title="Свернуть/Развернуть панель"
-					class="btn rounded-3"
+					class="btn rounded-3 {sidebar.isOpen ? '' : 'btn-solid theme-secondary'}"
 					onclick={() => (sidebar.isOpen = !sidebar.isOpen)}
 				>
 					<i class="bi bi-arrows-{sidebar.isOpen ? 'collapse' : 'expand'}-vertical"></i>
 				</button>
 			</div>
-			<hr />
 
 			<div class="d-flex flex-column flex-wrap gap-1">
 				{#if menu}
@@ -85,6 +84,7 @@
 						icon="<i class='bi bi-box-arrow-left'></i>"
 						href="/"
 						isOpen={sidebar.isOpen}
+						_class="{sidebar.isOpen ? '' : 'btn-solid theme-secondary'} w-100"
 					/>
 				</div>
 			</div>
@@ -115,31 +115,18 @@
 						{/if}
 					</button>
 					<div class="menu border-0 shadow-sm rounded-3">
-						{#if data.user && data.user.role === 'admin'}
-							<a class="menu-item rounded-3" href="/admin">Панель администратора</a>
-						{/if}
 						{#if data.user}
-							<button
-								class="menu-item rounded-3"
-								onclick={async () => {
-									await auth.signOut();
-									await logOutSession();
-									await refreshAll();
-									goto('/');
-								}}>Выйти</button
-							>
-						{:else}
-							<button
-								class="menu-item rounded-3"
-								onclick={async () => {
-									const result = await signInWithPopup(auth, new GoogleAuthProvider());
-									const idToken = await getIdToken(result.user);
-
-									await logInSession(idToken);
-									await refreshAll();
-								}}>Войти через Google</button
-							>
+							<a class="menu-item rounded-3" href="/admin/profile">Профиль</a>
 						{/if}
+						<button
+							class="menu-item rounded-3"
+							onclick={async () => {
+								await auth.signOut();
+								await logOutSession();
+								await refreshAll();
+								goto('/');
+							}}>Выйти</button
+						>
 					</div>
 				</nav>
 			</div>
