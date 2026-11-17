@@ -52,7 +52,7 @@
 {/snippet}
 
 {#if tags.length > 0}
-	<Table title="Теги" data={tags} />
+	<Table data={tags} />
 {/if}
 
 <Dialog

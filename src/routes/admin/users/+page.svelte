@@ -96,7 +96,7 @@
 {/snippet}
 
 <Column>
-	<Table title="Пользователи" data={usersForTable} />
+	<Table data={usersForTable} />
 </Column>
 
 <Dialog

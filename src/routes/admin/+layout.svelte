@@ -22,25 +22,20 @@
 	</div>
 {/snippet}
 
-{#snippet menu()}
+{#snippet sidebar()}
 	<div class="d-flex flex-column gap-1 flex-wrap">
 		{#each routes as route}
 			<ButtonIcon text={route.name} icon={route.icon} href={route.url} isOpen={false} />
-
-			<!-- <a class="btn rounded-3 text-start" href={route.url}>
-				<div class="w-100 d-flex align-items-baseline gap-2">
-					{#if route.icon}
-						{@html route.icon}
-					{/if}
-					<div>
-						{route.name}
-					</div>
-				</div>
-			</a> -->
 		{/each}
 	</div>
 {/snippet}
 
-<Layout1 {title} subTitle={STORE.subPanel} {menu} {data}>
+{#snippet menu()}
+	<div class="d-flex align-items-center justify-content-end">
+		<button class="btn btn-sm rounded-3">Создать</button>
+	</div>
+{/snippet}
+
+<Layout1 {sidebar} {title} {menu} subTitle={STORE.subPanel} {data}>
 	{@render children?.()}
 </Layout1>

@@ -2,6 +2,7 @@
 	import PageTitle from '#lib/components/PageTitle.svelte';
 	import SubPanel from '#lib/components/SubPanel.svelte';
 	import { getPosts, getTags } from '#lib/remoutes/firebase.remote.ts';
+	import { Table } from '@gorbulevsv/table';
 
 	let posts = $derived(getPosts());
 	let tags = $derived(getTags());
@@ -11,6 +12,22 @@
 		[...Object.values(await posts)].filter(
 			(p) => p.published && !p.pinned && p.tags.some((t) => t.name === selectedTag.name)
 		)
+	);
+	let data = $derived(
+		filteredPosts.map((p) => {
+			let { created, title, description, userName } = p as {
+				created: string;
+				title: string;
+				description: string;
+				userName?: string;
+			};
+			return {
+				Заголовок: `<b class='text-uppercase'>${title}</b>`,
+				Описание: description,
+				Дата: new Date(created).toLocaleDateString(),
+				Пользователь: userName || ''
+			};
+		})
 	);
 </script>
 
@@ -34,7 +51,7 @@
 	</div>
 </SubPanel>
 
-<div class="row row-cols-1 g-2">
+<div class="row row-cols-1 g-2" hidden>
 	{#each filteredPosts as item}
 		<div class="col h-100">
 			<div class="d-flex gap-5 bg-1 rounded-3 px-2 py-1">
@@ -48,3 +65,5 @@
 		</div>
 	{/each}
 </div>
+
+<Table {data} grows={[5, 6, 2, 2]} _class={{ row: 'align-items-top bg-1' }} />

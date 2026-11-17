@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { STORE } from '#lib/settings/store.svelte.ts';
 	import favicon from '#lib/assets/favicon.png';
 	import 'bootstrap/dist/css/bootstrap.min.css';
 	import 'bootstrap-icons/font/bootstrap-icons.min.css';
@@ -13,6 +14,7 @@
 	import { fade } from 'svelte/transition';
 
 	interface IProps {
+		sidebar?: Snippet | null;
 		title?: Snippet | null;
 		subTitle?: Snippet | null;
 		menu?: Snippet | null;
@@ -30,9 +32,7 @@
 		cookieStore.set('theme', theme?.getAttribute('data-bs-theme') || 'light');
 	}
 
-	let sidebar = $state({ width: 0, height: 100, isOpen: true });
-
-	let { title, subTitle, menu, children, footer, data }: IProps = $props();
+	let { sidebar, title, subTitle, menu, children, footer, data }: IProps = $props();
 </script>
 
 <svelte:head>
@@ -42,17 +42,16 @@
 
 <div class="w-100">
 	<aside
-		transition:fade
-		bind:clientWidth={sidebar.width}
-		class="position-fixed bg-3 shadow-sm"
-		style="height: {sidebar.height}dvh;"
+		bind:clientWidth={STORE.ADMIN.sidebar.width}
+		class="position-fixed bg-3"
+		style="height: {STORE.ADMIN.sidebar.height}dvh;"
 	>
 		<div
 			class="d-flex flex-column p-2 pt-1 bg-1 bg-70 gap-1 h-100"
 			style="backdrop-filter: blur(1em);"
 		>
 			<div class="d-flex align-items-center">
-				{#if sidebar.isOpen}
+				{#if STORE.ADMIN.sidebar.isOpen}
 					<a class="btn bg-transparent rounded-3 text-uppercase text-start" href="/admin">
 						<div class="w-100 fw-bold">Панель администратора</div>
 					</a>
@@ -60,22 +59,22 @@
 
 				<button
 					title="Свернуть/Развернуть панель"
-					class="btn rounded-3 {sidebar.isOpen ? '' : 'btn-solid theme-secondary'}"
-					onclick={() => (sidebar.isOpen = !sidebar.isOpen)}
+					class="btn rounded-3 {STORE.ADMIN.sidebar.isOpen ? '' : 'btn-solid theme-secondary'}"
+					onclick={() => (STORE.ADMIN.sidebar.isOpen = !STORE.ADMIN.sidebar.isOpen)}
 				>
-					<i class="bi bi-arrows-{sidebar.isOpen ? 'collapse' : 'expand'}-vertical"></i>
+					<i class="bi bi-arrows-{STORE.ADMIN.sidebar.isOpen ? 'collapse' : 'expand'}-vertical"></i>
 				</button>
 			</div>
 
 			<div class="d-flex flex-column flex-wrap gap-1">
-				{#if menu}
-					{@render menu?.()}
+				{#if sidebar}
+					{@render sidebar?.()}
 				{/if}
 			</div>
 
 			<div class="flex-grow-1 d-flex flex-column justify-content-end h-100">
 				<div
-					class="d-flex {sidebar.isOpen
+					class="d-flex {STORE.ADMIN.sidebar.isOpen
 						? ''
 						: 'flex-column'} align-items-center justify-content-between gap-1"
 				>
@@ -83,20 +82,25 @@
 						text="Вернуться на сайт"
 						icon="<i class='bi bi-box-arrow-left'></i>"
 						href="/"
-						isOpen={sidebar.isOpen}
-						_class="{sidebar.isOpen ? '' : 'btn-solid theme-secondary'} w-100"
+						isOpen={STORE.ADMIN.sidebar.isOpen}
+						_class="{STORE.ADMIN.sidebar.isOpen ? '' : 'btn-solid theme-secondary'} w-100"
 					/>
 				</div>
 			</div>
 		</div>
 	</aside>
-	<main class="flex-grow-1" style="margin-left: {sidebar.width}px;">
-		<div class="sticky-top px-4 py-3 bg-1 bg-70 w-100" style="backdrop-filter: blur(1em);">
-			<div class="d-flex align-items-center w-100">
+	<main class="flex-grow-1" style="margin-left: {STORE.ADMIN.sidebar.width}px;">
+		<div class="sticky-top px-4 py-3 bg-1 w-100" style="margin-left: .25px;">
+			<div class="d-flex align-items-center gap-1 w-100">
 				{#if title}
 					{@render title?.()}
 				{/if}
-				<nav class="flex-grow-1 d-flex align-items-center gap-1 justify-content-end">
+				<div class="flex-grow-1">
+					{#if menu}
+						{@render menu?.()}
+					{/if}
+				</div>
+				<nav class="d-flex align-items-center gap-1">
 					<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
 						<i class="bi bi-sun"></i>
 					</button>
@@ -138,7 +142,7 @@
 			{/if}
 		</div>
 
-		<div class="px-4 py-5" style="min-height: 100dvh;">
+		<div class="px-4 py-3">
 			{@render children?.()}
 		</div>
 
