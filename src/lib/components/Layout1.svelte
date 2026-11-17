@@ -41,13 +41,21 @@
 <div class="w-100">
 	<aside
 		bind:clientWidth={sidebar.width}
-		class="position-fixed bg-1"
+		class="position-fixed bg-2 shadow-sm"
 		style="height: {sidebar.height}dvh;"
 	>
-		<div class="d-flex flex-column p-2 bg-1 bg-70 gap-1 h-100" style="backdrop-filter: blur(1em);">
-			<a class="btn btn-sm bg-transparent rounded-3 text-uppercase text-start" href="/admin">
-				<div class="w-100 fw-bold">Панель администратора</div>
-			</a>
+		<div
+			class="d-flex flex-column p-2 pt-1 bg-1 bg-70 gap-1 h-100"
+			style="backdrop-filter: blur(1em);"
+		>
+			<div class="d-flex align-items-center">
+				<a class="btn bg-transparent rounded-3 text-uppercase text-start" href="/admin">
+					<div class="w-100 fw-bold">Панель администратора</div>
+				</a>
+				<button title="Свернуть/Развернуть панель" class="btn rounded-3">
+					<i class="bi bi-arrows-collapse-vertical"></i>
+				</button>
+			</div>
 
 			<div class="d-flex flex-column flex-wrap gap-1">
 				{#if menu}
@@ -56,9 +64,14 @@
 			</div>
 
 			<div class="flex-grow-1 d-flex flex-column justify-content-end h-100">
-				<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
-					<i class="bi bi-sun"></i>
-				</button>
+				<div class="d-flex align-items-center justify-content-between">
+					<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
+						<i class="bi bi-sun"></i>
+					</button>
+					<a title="Вернуться на сайт" class="btn btn-sm rounded-3" href="/">
+						<i class="bi bi-box-arrow-left"></i>
+					</a>
+				</div>
 			</div>
 		</div>
 	</aside>
@@ -68,7 +81,7 @@
 				{#if title}
 					{@render title?.()}
 				{/if}
-				<div class="flex-grow-1 d-flex align-items-center justify-content-end">
+				<nav class="flex-grow-1 d-flex align-items-center justify-content-end">
 					<button
 						title=""
 						class="btn-icon btn-sm border-0 rounded-3"
@@ -83,7 +96,7 @@
 							<i class="bi bi-person"></i>
 						{/if}
 					</button>
-					<nav class="menu border-0 shadow-sm rounded-3">
+					<div class="menu border-0 shadow-sm rounded-3">
 						{#if data.user && data.user.role === 'admin'}
 							<a class="menu-item rounded-3" href="/admin">Панель администратора</a>
 						{/if}
@@ -109,8 +122,8 @@
 								}}>Войти через Google</button
 							>
 						{/if}
-					</nav>
-				</div>
+					</div>
+				</nav>
 			</div>
 
 			{#if subTitle}
