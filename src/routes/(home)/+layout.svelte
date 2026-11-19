@@ -10,6 +10,7 @@
 	import { goto, refreshAll } from '$app/navigation';
 	import { signInWithPopup, GoogleAuthProvider, getIdToken } from 'firebase/auth';
 	import { Toaster } from '@gorbulevsv/toaster';
+	import PageTitle from '#lib/components/PageTitle.svelte';
 
 	let { children, data }: LayoutProps = $props();
 
@@ -33,19 +34,28 @@
 	<title>Храм Вознесения Господня</title>
 </svelte:head>
 
+{#snippet pageTitle()}
+	<a class="btn bg-transparent rounded-3 px-2" href="/">
+		<b class="fg-danger text-uppercase">Храм Вознесения Господня</b>
+	</a>
+{/snippet}
+{#snippet footer()}
+	<div class="d-flex flex-column align-items-center w-100 bg-1 bg-70 p-6" style="min-height: 10em;">
+		<div>Бабынино, храм Вознесения Господня</div>
+	</div>
+{/snippet}
+
 <div class="sticky-top w-100">
 	<div class="d-flex flex-column px-4 py-2 bg-1 bg-70" style="backdrop-filter: blur(1em);">
 		<div class="d-flex align-items-center">
 			<div class="d-flex align-items-center gap-0 flex-wrap">
-				<a class="btn bg-transparent px-3" href="/">
-					Храм <b class="">Вознесения Господня</b>
-				</a>
-				{#if STORE.pageTitle}
+				{@render pageTitle?.()}
+				{#if STORE.page.breadCrumb}
 					<div>
 						<i class="bi bi-chevron-right"></i>
 					</div>
 					<div class="btn bg-transparent text-uppercase fw-bold px-3">
-						{@render STORE.pageTitle?.()}
+						{@render STORE.page.breadCrumb?.()}
 					</div>
 				{/if}
 			</div>
@@ -103,9 +113,9 @@
 				</div>
 			</div>
 		</div>
-		{#if STORE.subPanel}
+		{#if STORE.page.subPanel}
 			<div class="px-3 py-2">
-				{@render STORE.subPanel?.()}
+				{@render STORE.page.subPanel?.()}
 			</div>
 		{/if}
 	</div>
@@ -114,9 +124,7 @@
 	{@render children()}
 </div>
 
-<div class="d-flex flex-column align-items-center w-100 bg-1 bg-70 p-6" style="min-height: 10em;">
-	<div>Бабынино, храм Вознесения Господня</div>
-</div>
+{@render footer?.()}
 
 <Toaster />
 

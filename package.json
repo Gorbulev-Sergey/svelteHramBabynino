@@ -30,7 +30,7 @@
 		"#lib/*": "./src/lib/*"
 	},
 	"dependencies": {
-		"@gorbulevsv/table": "^0.0.22",
+		"@gorbulevsv/table": "^0.0.23",
 		"@gorbulevsv/toaster": "^0.0.13",
 		"bootstrap": "^6.0.0-alpha.1",
 		"bootstrap-icons": "^1.13.2",

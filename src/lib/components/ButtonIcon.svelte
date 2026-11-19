@@ -5,6 +5,7 @@
 		icon?: string;
 		isOpen?: boolean;
 		href?: string;
+		reverse?: boolean;
 		onClick?: () => void;
 		_class?: string;
 		_style?: string;
@@ -16,6 +17,7 @@
 		icon,
 		isOpen = true,
 		href,
+		reverse = false,
 		onClick,
 		_class = 'w-100',
 		_style
@@ -24,13 +26,16 @@
 
 {#snippet buttonSnippet(icon?: string, text?: string, isOpen: boolean = true)}
 	<div class="w-100 d-flex align-items-baseline gap-2">
-		{#if icon}
+		{#if icon && !reverse}
 			{@html icon}
 		{/if}
-		{#if isOpen && text}
+		{#if text && isOpen}
 			<div>
 				{text}
 			</div>
+		{/if}
+		{#if icon && reverse}
+			{@html icon}
 		{/if}
 	</div>
 {/snippet}

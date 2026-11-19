@@ -26,8 +26,6 @@
 				});
 		});
 	});
-
-	$inspect(tags);
 </script>
 
 <PageTitle>

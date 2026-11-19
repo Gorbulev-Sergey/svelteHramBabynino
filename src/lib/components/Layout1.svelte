@@ -4,7 +4,7 @@
 	import 'bootstrap/dist/css/bootstrap.min.css';
 	import 'bootstrap-icons/font/bootstrap-icons.min.css';
 	import { Toaster } from '@gorbulevsv/toaster';
-	import type { Snippet } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
 	import { auth } from '#lib/settings/firebase.ts';
 	import { logInSession, logOutSession } from '#lib/remoutes/firebase-admin.remote.ts';
 	import { getIdToken, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
@@ -12,6 +12,7 @@
 	import type { LayoutProps } from './$types';
 	import ButtonIcon from './ButtonIcon.svelte';
 	import { fade } from 'svelte/transition';
+	import { browser } from '$app/env';
 
 	interface IProps {
 		sidebar?: Snippet | null;

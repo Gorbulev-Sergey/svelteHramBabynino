@@ -4,6 +4,8 @@
 	import { getPosts } from '#lib/remoutes/firebase.remote.ts';
 	import SubPanel from '#lib/components/SubPanel.svelte';
 	import PageTitle from '#lib/components/PageTitle.svelte';
+	import StoreSnippet from '#lib/components/StoreSnippet.svelte';
+	import { STORE } from '#lib/settings/store.svelte.ts';
 
 	let tags = $derived(getTags());
 	let posts = $derived(getPosts());
