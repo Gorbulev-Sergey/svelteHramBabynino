@@ -1,4 +1,4 @@
-import type { Snippet } from 'svelte';
+import { getContext, setContext, type Snippet } from 'svelte';
 
 interface IStore {
 	page: {
@@ -11,6 +11,16 @@ interface IStore {
 	};
 	pageTitle: Snippet<[]> | null;
 	subPanel: Snippet<[]> | null;
+	panels: {
+		breadCrumb?: () => ReturnType<import('svelte').Snippet>;
+		medium?: () => ReturnType<import('svelte').Snippet>;
+		nav?: {
+			main?: () => ReturnType<import('svelte').Snippet>;
+			add?: () => ReturnType<import('svelte').Snippet>;
+		};
+		sub?: () => ReturnType<import('svelte').Snippet>;
+		footer?: () => ReturnType<import('svelte').Snippet>;
+	};
 	ADMIN: {
 		sidebar: {
 			width?: number;
@@ -37,5 +47,16 @@ export const STORE = $state<IStore>({
 		footer: null,
 		breadCrumb: null,
 		mediumPanel: null
-	}
+	},
+	panels: {}
 });
+
+export function initSlots() {
+	return setContext('slots', STORE?.panels);
+}
+
+export function setSlots(slots: object) {
+	STORE.panels = slots;
+	const context = getContext('slots') as object;
+	Object.assign(context, STORE.panels);
+}

@@ -3,7 +3,7 @@
 	import Column from '#lib/components/Column.svelte';
 	import { getPosts } from '#lib/remoutes/firebase.remote.ts';
 	import StoreSnippet from '#lib/components/StoreSnippet.svelte';
-	import { STORE } from '#lib/settings/store.svelte.ts';
+	import { setSlots, STORE } from '#lib/settings/store.svelte.ts';
 
 	let tags = $derived(getTags());
 	let posts = $derived(getPosts());
@@ -13,17 +13,18 @@
 			(p) => p.published && !p.pinned && p.tags.some((t) => t.name === selectedTag.name)
 		)
 	);
+	setSlots({ breadCrumb, sub });
 </script>
 
-<StoreSnippet title="Хлебные крошки" bind:storeItem={STORE.page.breadCrumb}>
+{#snippet breadCrumb()}
 	<div>Главная страница</div>
 	<div>
 		<i class="bi bi-chevron-right"></i>
 	</div>
 	<div class="bg-3 rounded-3 px-2">{selectedTag.description}</div>
-</StoreSnippet>
+{/snippet}
 
-<StoreSnippet title="subPanel" bind:storeItem={STORE.page.subPanel}>
+{#snippet sub()}
 	<div class="d-flex align-items-center justify-content-start gap-2 flex-wrap">
 		{#each await tags as tag}
 			<button class="badge rounded-3 px-1" onclick={() => (selectedTag = tag)}>
@@ -31,7 +32,7 @@
 			</button>
 		{/each}
 	</div>
-</StoreSnippet>
+{/snippet}
 
 <Column gap="7">
 	<div class="row row-cols-4 justify-content-center gx-4 gy-8">
