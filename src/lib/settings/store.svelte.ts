@@ -1,4 +1,3 @@
-import { browser } from '$app/env';
 import type { Snippet } from 'svelte';
 
 interface IStore {

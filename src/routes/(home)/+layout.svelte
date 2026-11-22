@@ -10,7 +10,7 @@
 	import { goto, refreshAll } from '$app/navigation';
 	import { signInWithPopup, GoogleAuthProvider, getIdToken } from 'firebase/auth';
 	import { Toaster } from '@gorbulevsv/toaster';
-	import PageTitle from '#lib/components/PageTitle.svelte';
+	import StoreSnippet from '#lib/components/StoreSnippet.svelte';
 
 	let { children, data }: LayoutProps = $props();
 
@@ -34,22 +34,23 @@
 	<title>Храм Вознесения Господня</title>
 </svelte:head>
 
-{#snippet pageTitle()}
+<StoreSnippet title="Title" bind:storeItem={STORE.page.title}>
 	<a class="btn bg-transparent rounded-3 px-2" href="/">
 		<b class="fg-danger text-uppercase">Храм Вознесения Господня</b>
 	</a>
-{/snippet}
-{#snippet footer()}
+</StoreSnippet>
+
+<StoreSnippet title="Footer" bind:storeItem={STORE.page.footer}>
 	<div class="d-flex flex-column align-items-center w-100 bg-1 bg-70 p-6" style="min-height: 10em;">
 		<div>Бабынино, храм Вознесения Господня</div>
 	</div>
-{/snippet}
+</StoreSnippet>
 
 <div class="sticky-top w-100">
 	<div class="d-flex flex-column px-4 py-2 bg-1 bg-70" style="backdrop-filter: blur(1em);">
 		<div class="d-flex align-items-center">
 			<div class="d-flex align-items-center gap-0 flex-wrap">
-				{@render pageTitle?.()}
+				{@render STORE.page.title?.()}
 				{#if STORE.page.breadCrumb}
 					<div>
 						<i class="bi bi-chevron-right"></i>
@@ -124,7 +125,7 @@
 	{@render children()}
 </div>
 
-{@render footer?.()}
+{@render STORE.page.footer?.()}
 
 <Toaster />
 

@@ -43,6 +43,12 @@
 	</div>
 </StoreSnippet>
 
+<StoreSnippet title="Средняя панель" bind:storeItem={STORE.page.mediumPanel}>
+	<div class="d-flex align-items-center justify-content-end gap-1">
+		<button class="btn btn-sm rounded-3">Создать</button>
+	</div>
+</StoreSnippet>
+
 <StoreSnippet title="SubPanel" bind:storeItem={STORE.page.subPanel}>
 	<div class="d-flex align-items-center justify-content-start flex-wrap gap-1">
 		{#each await tags as tag}

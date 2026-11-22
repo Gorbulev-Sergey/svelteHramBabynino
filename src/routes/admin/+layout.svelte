@@ -10,6 +10,7 @@
 	import { goto, refreshAll } from '$app/navigation';
 	import { page } from '$app/state';
 	import { Toaster } from '@gorbulevsv/toaster';
+	import StoreSnippet from '#lib/components/StoreSnippet.svelte';
 
 	const routes: IRoute[] = [
 		{ name: 'Публикации', url: '/admin', icon: '<i class="bi bi-newspaper"></i>' },
@@ -58,7 +59,6 @@
 					<i class="bi bi-arrows-{STORE.ADMIN.sidebar.isOpen ? 'collapse' : 'expand'}-vertical"></i>
 				</button>
 			</div>
-
 			<div class="d-flex flex-column flex-wrap gap-1">
 				<div class="d-flex flex-column gap-1 flex-wrap">
 					{#each routes as route}
@@ -93,18 +93,14 @@
 		<div class="sticky-top px-4 py-3 bg-1 w-100" style="margin-left: .25px;">
 			<div class="d-flex align-items-center gap-1 w-100">
 				<div class="d-flex align-items-center gap-2">
-					<div class="rounded-3 px-2 fw-bold text-uppercase">
-						{routes.find((r) => r.url === page.route.id)?.name}
-
-						{#if STORE.page.breadCrumb}
+					{#if STORE.page.breadCrumb}
+						<div class="rounded-3 px-2 fw-bold text-uppercase">
 							{@render STORE.page.breadCrumb?.()}
-						{/if}
-					</div>
+						</div>
+					{/if}
 				</div>
 				<div class="flex-grow-1">
-					<nav class="d-flex align-items-center justify-content-end">
-						<button class="btn btn-sm rounded-3">Создать</button>
-					</nav>
+					{@render STORE.page.mediumPanel?.()}
 				</div>
 				<nav class="d-flex align-items-center gap-1">
 					<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
@@ -148,9 +144,9 @@
 			{/if}
 		</div>
 
-		<footer class="px-4 py-3">
+		<main class="px-4 pt-3 pb-9">
 			{@render children?.()}
-		</footer>
+		</main>
 	</main>
 </div>
 
@@ -159,6 +155,7 @@
 <style>
 	/* Настройка цветов фона для светлой и темной темы */
 	:global(:root) {
-		--bs-bg-body: light-dark(var(--bs-white), var(--bs-gray-800));
+		--bs-bg-body: light-dark(var(--bs-white), var(--bs-pewter-700));
+		--bs-bg-1: light-dark(var(--bs-pewter-025), var(--bs-pewter-800));
 	}
 </style>
