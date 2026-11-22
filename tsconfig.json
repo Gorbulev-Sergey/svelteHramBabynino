@@ -2,6 +2,9 @@
 	"extends": "$app/tsconfig",
 	"compilerOptions": {
 		"strict": true
+		// "module": "commonjs",
+		// "esModuleInterop": true,
+		// "resolveJsonModule": true
 	},
 	"include": ["src", "vite.config.ts"]
 }

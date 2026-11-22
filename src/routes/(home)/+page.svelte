@@ -2,38 +2,36 @@
 	import { getTags } from '#lib/remoutes/firebase.remote.ts';
 	import Column from '#lib/components/Column.svelte';
 	import { getPosts } from '#lib/remoutes/firebase.remote.ts';
-	import SubPanel from '#lib/components/SubPanel.svelte';
-	import PageTitle from '#lib/components/PageTitle.svelte';
+	import StoreSnippet from '#lib/components/StoreSnippet.svelte';
+	import { STORE } from '#lib/settings/store.svelte.ts';
 
-	let tags = $derived(await getTags());
-	let posts = $derived(await getPosts());
-	let selectedTag = $state(tags.find((t) => t.name === 'главное'));
+	let tags = $derived(getTags());
+	let posts = $derived(getPosts());
+	let selectedTag = $derived((await tags).find((t) => t.name === 'главное'));
 	let filteredPosts = $derived(
-		[...Object.values(posts)].filter(
+		[...Object.values(await posts)].filter(
 			(p) => p.published && !p.pinned && p.tags.some((t) => t.name === selectedTag.name)
 		)
 	);
 </script>
 
-<PageTitle>
-	<div class="d-flex align-items-center gap-3">
-		<div>Главная страница</div>
-		<div>
-			<i class="bi bi-chevron-right"></i>
-		</div>
-		<div class="bg-3 rounded-3 px-2">{selectedTag.description}</div>
+<StoreSnippet title="Хлебные крошки" bind:storeItem={STORE.page.breadCrumb}>
+	<div>Главная страница</div>
+	<div>
+		<i class="bi bi-chevron-right"></i>
 	</div>
-</PageTitle>
+	<div class="bg-3 rounded-3 px-2">{selectedTag.description}</div>
+</StoreSnippet>
 
-<SubPanel>
+<StoreSnippet title="subPanel" bind:storeItem={STORE.page.subPanel}>
 	<div class="d-flex align-items-center justify-content-start gap-2 flex-wrap">
-		{#each tags as tag}
+		{#each await tags as tag}
 			<button class="badge rounded-3 px-1" onclick={() => (selectedTag = tag)}>
 				#{tag.name}
 			</button>
 		{/each}
 	</div>
-</SubPanel>
+</StoreSnippet>
 
 <Column gap="7">
 	<div class="row row-cols-4 justify-content-center gx-4 gy-8">
