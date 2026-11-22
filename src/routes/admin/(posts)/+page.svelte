@@ -3,7 +3,7 @@
 	import StoreSnippet from '#lib/components/StoreSnippet.svelte';
 	import SubPanel from '#lib/components/SubPanel.svelte';
 	import { getPosts, getTags } from '#lib/remoutes/firebase.remote.ts';
-	import { STORE } from '#lib/settings/store.svelte.ts';
+	import { setSlots, STORE } from '#lib/settings/store.svelte.ts';
 	import { Table } from '@gorbulevsv/table';
 
 	let posts = $derived(getPosts());
@@ -31,9 +31,10 @@
 			};
 		})
 	);
+	setSlots({ breadCrumb, medium, sub });
 </script>
 
-<StoreSnippet title="Хлебные крошки" bind:storeItem={STORE.page.breadCrumb}>
+{#snippet breadCrumb()}
 	<div class="d-flex align-items-center gap-1">
 		<div class="rounded-3 px-2">Публикации</div>
 		<div>
@@ -41,15 +42,15 @@
 		</div>
 		<div class="bg-3 rounded-3 px-2">{selectedTag.name}</div>
 	</div>
-</StoreSnippet>
+{/snippet}
 
-<StoreSnippet title="Средняя панель" bind:storeItem={STORE.page.mediumPanel}>
+{#snippet medium()}
 	<div class="d-flex align-items-center justify-content-end gap-1">
 		<button class="btn btn-sm rounded-3">Создать</button>
 	</div>
-</StoreSnippet>
+{/snippet}
 
-<StoreSnippet title="SubPanel" bind:storeItem={STORE.page.subPanel}>
+{#snippet sub()}
 	<div class="d-flex align-items-center justify-content-start flex-wrap gap-1">
 		{#each await tags as tag}
 			<button class="badge rounded-3 px-1" onclick={() => (selectedTag = tag)}>
@@ -57,7 +58,7 @@
 			</button>
 		{/each}
 	</div>
-</StoreSnippet>
+{/snippet}
 
 <div class="row row-cols-1 g-2" hidden>
 	{#each filteredPosts as item}

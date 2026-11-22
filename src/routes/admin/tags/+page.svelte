@@ -1,11 +1,12 @@
 <script lang="ts">
 	import Dialog from '#lib/components/Dialog.svelte';
-	import PageTitle from '#lib/components/PageTitle.svelte';
 	import { db } from '#lib/settings/firebase.ts';
+	import { setSlots } from '#lib/settings/store.svelte.ts';
 	import { Table } from '@gorbulevsv/table';
 	import { onValue, ref, set } from 'firebase/database';
 	import { onMount } from 'svelte';
-	import { description, number } from 'valibot';
+
+	setSlots({ breadCrumb });
 
 	let tags = $state<{ name: string; description: string }[]>([]);
 
@@ -28,7 +29,7 @@
 	});
 </script>
 
-<PageTitle>
+{#snippet breadCrumb()}
 	<div class="d-flex align-items-center gap-3">
 		<div>Панель администратора</div>
 		<div>
@@ -36,7 +37,7 @@
 		</div>
 		<div class="bg-3 rounded-3 px-2">Теги</div>
 	</div>
-</PageTitle>
+{/snippet}
 
 {#snippet tagSnippet(obj: { index: number; name: string; description: string })}
 	<button

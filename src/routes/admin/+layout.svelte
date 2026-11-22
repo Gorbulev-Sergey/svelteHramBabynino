@@ -6,11 +6,9 @@
 	import type { IRoute } from '#lib/models/Route.ts';
 	import { logOutSession } from '#lib/remoutes/firebase-admin.remote.ts';
 	import { auth } from '#lib/settings/firebase.ts';
-	import { STORE } from '#lib/settings/store.svelte.ts';
+	import { initSlots, setSlots, STORE } from '#lib/settings/store.svelte.ts';
 	import { goto, refreshAll } from '$app/navigation';
-	import { page } from '$app/state';
 	import { Toaster } from '@gorbulevsv/toaster';
-	import StoreSnippet from '#lib/components/StoreSnippet.svelte';
 
 	const routes: IRoute[] = [
 		{ name: 'Публикации', url: '/admin', icon: '<i class="bi bi-newspaper"></i>' },
@@ -27,6 +25,9 @@
 		cookieStore.set('theme', theme?.getAttribute('data-bs-theme') || 'light');
 	}
 
+	initSlots();
+	setSlots({ nav: { main: mainNav, add: addMenu } });
+
 	let { children, data } = $props();
 </script>
 
@@ -34,6 +35,53 @@
 	<link rel="icon" href={favicon} />
 	<title>Храм Вознесения Господня</title>
 </svelte:head>
+
+{#snippet mainNav()}
+	{#each routes as route}
+		<ButtonIcon
+			text={route.name}
+			icon={route.icon}
+			href={route.url}
+			isOpen={STORE.ADMIN.sidebar.isOpen}
+		/>
+	{/each}
+{/snippet}
+
+{#snippet addMenu()}
+	<nav class="d-flex align-items-center gap-1">
+		<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
+			<i class="bi bi-sun"></i>
+		</button>
+		<button
+			title=""
+			class="btn-icon btn-sm border-0 rounded-3"
+			data-bs-toggle="menu"
+			aria-expanded="false"
+		>
+			{#if data.user && data.user.picture}
+				<span class="avatar avatar-xs">
+					<img class="avatar-img rounded-3" src={data.user.picture} alt="" />
+				</span>
+			{:else}
+				<i class="bi bi-person"></i>
+			{/if}
+		</button>
+		<div class="menu border-0 shadow-sm rounded-3">
+			{#if data.user}
+				<a class="menu-item rounded-3" href="/admin/profile">Профиль</a>
+			{/if}
+			<button
+				class="menu-item rounded-3"
+				onclick={async () => {
+					await auth.signOut();
+					await logOutSession();
+					await refreshAll();
+					goto('/');
+				}}>Выйти</button
+			>
+		</div>
+	</nav>
+{/snippet}
 
 <div class="w-100">
 	<aside
@@ -61,14 +109,7 @@
 			</div>
 			<div class="d-flex flex-column flex-wrap gap-1">
 				<div class="d-flex flex-column gap-1 flex-wrap">
-					{#each routes as route}
-						<ButtonIcon
-							text={route.name}
-							icon={route.icon}
-							href={route.url}
-							isOpen={STORE.ADMIN.sidebar.isOpen}
-						/>
-					{/each}
+					{@render mainNav?.()}
 				</div>
 			</div>
 
@@ -93,53 +134,21 @@
 		<div class="sticky-top px-4 py-3 bg-1 w-100" style="margin-left: .25px;">
 			<div class="d-flex align-items-center gap-1 w-100">
 				<div class="d-flex align-items-center gap-2">
-					{#if STORE.page.breadCrumb}
+					{#if STORE.panels.breadCrumb}
 						<div class="rounded-3 px-2 fw-bold text-uppercase">
-							{@render STORE.page.breadCrumb?.()}
+							{@render STORE.panels.breadCrumb?.()}
 						</div>
 					{/if}
 				</div>
 				<div class="flex-grow-1">
-					{@render STORE.page.mediumPanel?.()}
+					{@render STORE.panels.medium?.()}
 				</div>
-				<nav class="d-flex align-items-center gap-1">
-					<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
-						<i class="bi bi-sun"></i>
-					</button>
-					<button
-						title=""
-						class="btn-icon btn-sm border-0 rounded-3"
-						data-bs-toggle="menu"
-						aria-expanded="false"
-					>
-						{#if data.user && data.user.picture}
-							<span class="avatar avatar-xs">
-								<img class="avatar-img rounded-3" src={data.user.picture} alt="" />
-							</span>
-						{:else}
-							<i class="bi bi-person"></i>
-						{/if}
-					</button>
-					<div class="menu border-0 shadow-sm rounded-3">
-						{#if data.user}
-							<a class="menu-item rounded-3" href="/admin/profile">Профиль</a>
-						{/if}
-						<button
-							class="menu-item rounded-3"
-							onclick={async () => {
-								await auth.signOut();
-								await logOutSession();
-								await refreshAll();
-								goto('/');
-							}}>Выйти</button
-						>
-					</div>
-				</nav>
+				{@render addMenu?.()}
 			</div>
 
-			{#if STORE.page.subPanel}
+			{#if STORE.panels?.sub}
 				<div class="px-0 pt-3 pb-1">
-					{@render STORE.page.subPanel?.()}
+					{@render STORE.panels.sub?.()}
 				</div>
 			{/if}
 		</div>
