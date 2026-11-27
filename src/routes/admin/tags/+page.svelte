@@ -1,9 +1,8 @@
 <script lang="ts">
 	import BreadCrumb from '#lib/components/BreadCrumb.svelte';
 	import Dialog from '#lib/components/Dialog.svelte';
-	import Slot from '#lib/components/Slot.svelte';
+	import MaketAdmin from '#lib/components/MaketAdmin.svelte';
 	import { db } from '#lib/settings/firebase.ts';
-	import { STORE } from '#lib/settings/store.svelte.ts';
 	import { Table } from '@gorbulevsv/table';
 	import { onValue, ref, set } from 'firebase/database';
 	import { onMount } from 'svelte';
@@ -27,11 +26,9 @@
 				});
 		});
 	});
-</script>
 
-<Slot title="breadCrumb" bind:storeSlot={STORE.panels.breadCrumb}>
-	<BreadCrumb routes={[{ url: 'admin/tags', title: 'Теги' }]} hasStartArrow={false} />
-</Slot>
+	let { data } = $props();
+</script>
 
 {#snippet tagSnippet(obj: { index: number; name: string; description: string })}
 	<button
@@ -44,9 +41,15 @@
 	>
 {/snippet}
 
-{#if tags.length > 0}
-	<Table data={tags} />
-{/if}
+<MaketAdmin {data}>
+	{#snippet breadCrumb()}
+		<BreadCrumb routes={[{ url: 'admin/tags', title: 'Теги' }]} hasStartArrow={false} />
+	{/snippet}
+
+	{#if tags.length > 0}
+		<Table data={tags} />
+	{/if}
+</MaketAdmin>
 
 <Dialog
 	title="Настроить тег"

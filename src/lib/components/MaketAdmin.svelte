@@ -10,6 +10,7 @@
 	import { goto, refreshAll } from '$app/navigation';
 	import { Toaster } from '@gorbulevsv/toaster';
 	import Slot from '#lib/components/Slot.svelte';
+	import type { Snippet } from 'svelte';
 
 	const routes: IRoute[] = [
 		{ name: 'Публикации', url: '/admin', icon: '<i class="bi bi-newspaper"></i>' },
@@ -26,7 +27,15 @@
 		cookieStore.set('theme', theme?.getAttribute('data-bs-theme') || 'light');
 	}
 
-	let { children, data } = $props();
+	interface IProps {
+		breadCrumb?: Snippet;
+		sub?: Snippet;
+		medium?: Snippet;
+		children?: Snippet;
+		data?: any;
+	}
+
+	let { breadCrumb, sub, medium, children, data }: IProps = $props();
 </script>
 
 <svelte:head>
@@ -34,7 +43,7 @@
 	<title>Храм Вознесения Господня</title>
 </svelte:head>
 
-<Slot title="mainNav" bind:storeSlot={STORE.panels.mainNav}>
+{#snippet mainNav()}
 	{#each routes as route}
 		<ButtonIcon
 			text={route.name}
@@ -43,9 +52,9 @@
 			isOpen={STORE.ADMIN.sidebar.isOpen}
 		/>
 	{/each}
-</Slot>
+{/snippet}
 
-<Slot title="addNav" bind:storeSlot={STORE.panels.addNav}>
+{#snippet addNav()}
 	<nav class="d-flex align-items-center gap-1">
 		<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
 			<i class="bi bi-sun"></i>
@@ -79,7 +88,7 @@
 			>
 		</div>
 	</nav>
-</Slot>
+{/snippet}
 
 <div class="w-100">
 	<aside
@@ -107,7 +116,7 @@
 			</div>
 			<div class="d-flex flex-column flex-wrap gap-1">
 				<div class="d-flex flex-column gap-1 flex-wrap">
-					{@render STORE.panels.mainNav?.()}
+					{@render mainNav?.()}
 				</div>
 			</div>
 
@@ -132,17 +141,17 @@
 		<div class="sticky-top px-4 pt-3 pb-1 bg-1 w-100" style="margin-left: .25px;">
 			<div class="d-flex align-items-center gap-1 w-100">
 				<div class="d-flex align-items-center gap-2">
-					{@render STORE.panels.breadCrumb?.()}
+					{@render breadCrumb?.()}
 				</div>
 				<div class="flex-grow-1">
-					{@render STORE.panels.medium?.()}
+					{@render medium?.()}
 				</div>
-				{@render STORE.panels.addNav?.()}
+				{@render addNav?.()}
 			</div>
 
 			{#if STORE.panels?.sub}
 				<div class="px-0 py-1">
-					{@render STORE.panels.sub?.()}
+					{@render sub?.()}
 				</div>
 			{/if}
 		</div>

@@ -2,6 +2,7 @@
 	import BreadCrumb from '#lib/components/BreadCrumb.svelte';
 	import Column from '#lib/components/Column.svelte';
 	import Dialog from '#lib/components/Dialog.svelte';
+	import MaketAdmin from '#lib/components/MaketAdmin.svelte';
 	import Slot from '#lib/components/Slot.svelte';
 	import { Roles, type TRole } from '#lib/models/Role.ts';
 	import { addRoleToUser, changeUserName, getUsers } from '#lib/remoutes/firebase-admin.remote.ts';
@@ -43,10 +44,6 @@
 		selected: { name: '' }
 	});
 </script>
-
-<Slot title="breadCrumb" bind:storeSlot={STORE.panels.breadCrumb}>
-	<BreadCrumb routes={[{ url: 'admin/users', title: 'Пользователи' }]} hasStartArrow={false} />
-</Slot>
 
 {#snippet pictureSnippet(obj: { uid: string; picture: { url?: string } })}
 	{#if obj.picture.url}
@@ -102,9 +99,15 @@
 	</div>
 {/snippet}
 
-<Column>
-	<Table data={usersForTable} />
-</Column>
+<MaketAdmin {data}>
+	{#snippet breadCrumb()}
+		<BreadCrumb routes={[{ url: 'admin/users', title: 'Пользователи' }]} hasStartArrow={false} />
+	{/snippet}
+
+	<Column>
+		<Table data={usersForTable} />
+	</Column>
+</MaketAdmin>
 
 <Dialog
 	title="Изменить имя пользователя"
