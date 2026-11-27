@@ -3,7 +3,7 @@ interface IStore {
 		sidebar: {
 			width?: number;
 			height?: number;
-			isOpen?: boolean;
+			isOpen: boolean;
 		};
 	};
 }

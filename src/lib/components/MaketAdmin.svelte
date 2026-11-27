@@ -24,6 +24,13 @@
 			theme.getAttribute('data-bs-theme') == 'light' ? 'dark' : 'light'
 		);
 		cookieStore.set('theme', theme?.getAttribute('data-bs-theme') || 'light');
+		refreshAll();
+	}
+
+	function toggleSidebar() {
+		cookieStore.set('sidebar', String(!STORE.ADMIN.sidebar.isOpen));
+		STORE.ADMIN.sidebar.isOpen = !STORE.ADMIN.sidebar.isOpen;
+		refreshAll();
 	}
 
 	interface IProps {
@@ -108,7 +115,7 @@
 				<button
 					title="Свернуть/Развернуть панель"
 					class="btn rounded-3 {STORE.ADMIN.sidebar.isOpen ? 'light' : 'btn-solid theme-secondary'}"
-					onclick={() => (STORE.ADMIN.sidebar.isOpen = !STORE.ADMIN.sidebar.isOpen)}
+					onclick={() => toggleSidebar()}
 				>
 					<i class="bi bi-arrows-{STORE.ADMIN.sidebar.isOpen ? 'collapse' : 'expand'}-vertical"></i>
 				</button>
