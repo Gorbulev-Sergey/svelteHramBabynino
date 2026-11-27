@@ -6,9 +6,10 @@
 	import type { IRoute } from '#lib/models/Route.ts';
 	import { logOutSession } from '#lib/remoutes/firebase-admin.remote.ts';
 	import { auth } from '#lib/settings/firebase.ts';
-	import { initSlots, setSlots, STORE } from '#lib/settings/store.svelte.ts';
+	import { STORE } from '#lib/settings/store.svelte.ts';
 	import { goto, refreshAll } from '$app/navigation';
 	import { Toaster } from '@gorbulevsv/toaster';
+	import Slot from '#lib/components/Slot.svelte';
 
 	const routes: IRoute[] = [
 		{ name: 'Публикации', url: '/admin', icon: '<i class="bi bi-newspaper"></i>' },
@@ -25,9 +26,6 @@
 		cookieStore.set('theme', theme?.getAttribute('data-bs-theme') || 'light');
 	}
 
-	initSlots();
-	setSlots({ nav: { main: mainNav, add: addMenu } });
-
 	let { children, data } = $props();
 </script>
 
@@ -36,7 +34,7 @@
 	<title>Храм Вознесения Господня</title>
 </svelte:head>
 
-{#snippet mainNav()}
+<Slot title="mainNav" bind:storeSlot={STORE.panels.mainNav}>
 	{#each routes as route}
 		<ButtonIcon
 			text={route.name}
@@ -45,9 +43,9 @@
 			isOpen={STORE.ADMIN.sidebar.isOpen}
 		/>
 	{/each}
-{/snippet}
+</Slot>
 
-{#snippet addMenu()}
+<Slot title="addNav" bind:storeSlot={STORE.panels.addNav}>
 	<nav class="d-flex align-items-center gap-1">
 		<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
 			<i class="bi bi-sun"></i>
@@ -81,7 +79,7 @@
 			>
 		</div>
 	</nav>
-{/snippet}
+</Slot>
 
 <div class="w-100">
 	<aside
@@ -109,7 +107,7 @@
 			</div>
 			<div class="d-flex flex-column flex-wrap gap-1">
 				<div class="d-flex flex-column gap-1 flex-wrap">
-					{@render mainNav?.()}
+					{@render STORE.panels.mainNav?.()}
 				</div>
 			</div>
 
@@ -131,23 +129,19 @@
 		</div>
 	</aside>
 	<main class="flex-grow-1" style="margin-left: {STORE.ADMIN.sidebar.width}px;">
-		<div class="sticky-top px-4 py-3 bg-1 w-100" style="margin-left: .25px;">
+		<div class="sticky-top px-4 pt-3 pb-1 bg-1 w-100" style="margin-left: .25px;">
 			<div class="d-flex align-items-center gap-1 w-100">
 				<div class="d-flex align-items-center gap-2">
-					{#if STORE.panels.breadCrumb}
-						<div class="rounded-3 px-2 fw-bold text-uppercase">
-							{@render STORE.panels.breadCrumb?.()}
-						</div>
-					{/if}
+					{@render STORE.panels.breadCrumb?.()}
 				</div>
 				<div class="flex-grow-1">
 					{@render STORE.panels.medium?.()}
 				</div>
-				{@render addMenu?.()}
+				{@render STORE.panels.addNav?.()}
 			</div>
 
 			{#if STORE.panels?.sub}
-				<div class="px-0 pt-3 pb-1">
+				<div class="px-0 py-1">
 					{@render STORE.panels.sub?.()}
 				</div>
 			{/if}

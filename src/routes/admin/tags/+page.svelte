@@ -1,12 +1,12 @@
 <script lang="ts">
+	import BreadCrumb from '#lib/components/BreadCrumb.svelte';
 	import Dialog from '#lib/components/Dialog.svelte';
+	import Slot from '#lib/components/Slot.svelte';
 	import { db } from '#lib/settings/firebase.ts';
-	import { setSlots } from '#lib/settings/store.svelte.ts';
+	import { STORE } from '#lib/settings/store.svelte.ts';
 	import { Table } from '@gorbulevsv/table';
 	import { onValue, ref, set } from 'firebase/database';
 	import { onMount } from 'svelte';
-
-	setSlots({ breadCrumb });
 
 	let tags = $state<{ name: string; description: string }[]>([]);
 
@@ -29,15 +29,9 @@
 	});
 </script>
 
-{#snippet breadCrumb()}
-	<div class="d-flex align-items-center gap-3">
-		<div>Панель администратора</div>
-		<div>
-			<i class="bi bi-chevron-right"></i>
-		</div>
-		<div class="bg-3 rounded-3 px-2">Теги</div>
-	</div>
-{/snippet}
+<Slot title="breadCrumb" bind:storeSlot={STORE.panels.breadCrumb}>
+	<BreadCrumb routes={[{ url: 'admin/tags', title: 'Теги' }]} hasStartArrow={false} />
+</Slot>
 
 {#snippet tagSnippet(obj: { index: number; name: string; description: string })}
 	<button

@@ -15,12 +15,12 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^8.0.0",
-		"@sveltejs/kit": "^3.0.0",
+		"@sveltejs/kit": "^3.4.1",
 		"@sveltejs/vite-plugin-svelte": "^7.2.0",
 		"@types/node": "^26.6.6",
 		"prettier": "^3.8.3",
 		"prettier-plugin-svelte": "^4.1.0",
-		"svelte": "^5.57.1",
+		"svelte": "^5.59.2",
 		"svelte-check": "^4.6.0",
 		"typescript": "^6.0.3",
 		"vite": "^8.3.0"
@@ -32,7 +32,7 @@
 	"dependencies": {
 		"@gorbulevsv/table": "^0.0.23",
 		"@gorbulevsv/toaster": "^0.0.13",
-		"bootstrap": "^6.0.0-alpha.1",
+		"bootstrap": "^6.0.0-alpha.2",
 		"bootstrap-icons": "^1.13.2",
 		"firebase": "^13.3.0",
 		"firebase-admin": "^14.5.1",

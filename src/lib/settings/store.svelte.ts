@@ -1,15 +1,14 @@
 import { getContext, setContext, type Snippet } from 'svelte';
 
 interface IStore {
+	// panels: Record<string, () => ReturnType<import('svelte').Snippet>>;
 	panels: {
-		breadCrumb?: () => ReturnType<import('svelte').Snippet>;
-		medium?: () => ReturnType<import('svelte').Snippet>;
-		nav?: {
-			main?: () => ReturnType<import('svelte').Snippet>;
-			add?: () => ReturnType<import('svelte').Snippet>;
-		};
-		sub?: () => ReturnType<import('svelte').Snippet>;
-		footer?: () => ReturnType<import('svelte').Snippet>;
+		breadCrumb: Snippet<[]> | null;
+		medium: Snippet<[]> | null;
+		mainNav: Snippet<[]> | null;
+		addNav: Snippet<[]> | null;
+		sub: Snippet<[]> | null;
+		footer: Snippet<[]> | null;
 	};
 	ADMIN: {
 		sidebar: {
@@ -20,7 +19,7 @@ interface IStore {
 	};
 }
 
-export const STORE = $state<IStore>({
+export let STORE = $state<IStore>({
 	ADMIN: {
 		sidebar: {
 			width: 0,
@@ -28,15 +27,22 @@ export const STORE = $state<IStore>({
 			isOpen: true
 		}
 	},
-	panels: {}
+	panels: {
+		breadCrumb: null,
+		medium: null,
+		mainNav: null,
+		addNav: null,
+		sub: null,
+		footer: null
+	}
 });
 
 export function initSlots() {
-	return setContext('slots', STORE?.panels);
+	return setContext('slots', STORE.panels);
 }
+export function setSlots(snippets: Record<string, () => ReturnType<import('svelte').Snippet>>) {
+	let context = getContext('slots') || setContext('slots', STORE.panels);
 
-export function setSlots(slots: object) {
-	STORE.panels = slots;
-	const context = getContext('slots') as object;
-	Object.assign(context, STORE.panels);
+	Object.assign(STORE.panels, snippets);
+	Object.assign(context, snippets);
 }

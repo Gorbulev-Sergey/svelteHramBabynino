@@ -2,29 +2,36 @@
 	import { getTags } from '#lib/remoutes/firebase.remote.ts';
 	import Column from '#lib/components/Column.svelte';
 	import { getPosts } from '#lib/remoutes/firebase.remote.ts';
-	import StoreSnippet from '#lib/components/StoreSnippet.svelte';
-	import { setSlots, STORE } from '#lib/settings/store.svelte.ts';
+	import Slot from '#lib/components/Slot.svelte';
+	import BreadCrumb from '#lib/components/BreadCrumb.svelte';
+	import { STORE } from '#lib/settings/store.svelte.ts';
+	import Post from '#lib/components/posts/Post.svelte';
+	import { Tag, type ITag } from '#lib/models/Tag.ts';
 
 	let tags = $derived(getTags());
 	let posts = $derived(getPosts());
-	let selectedTag = $derived((await tags).find((t) => t.name === 'главное'));
+	let selectedTag = $derived((await tags).find((t) => t.name === 'главное') || Tag());
+	let pinnedPosts = $derived(
+		[...Object.values(await posts)].filter(
+			(p) => p.published && p.pinned && p.tags.some((t) => t.name === selectedTag.name)
+		)
+	);
 	let filteredPosts = $derived(
 		[...Object.values(await posts)].filter(
 			(p) => p.published && !p.pinned && p.tags.some((t) => t.name === selectedTag.name)
 		)
 	);
-	setSlots({ breadCrumb, sub });
+	let routes = $derived([
+		{ url: '/', title: 'Публикации' },
+		{ url: '/', title: selectedTag.name }
+	]);
 </script>
 
-{#snippet breadCrumb()}
-	<div>Главная страница</div>
-	<div>
-		<i class="bi bi-chevron-right"></i>
-	</div>
-	<div class="bg-3 rounded-3 px-2">{selectedTag.description}</div>
-{/snippet}
+<Slot title="breadCrumb" bind:storeSlot={STORE.panels.breadCrumb}>
+	<BreadCrumb {routes} />
+</Slot>
 
-{#snippet sub()}
+<Slot title="sub" bind:storeSlot={STORE.panels.sub}>
 	<div class="d-flex align-items-center justify-content-start gap-2 flex-wrap">
 		{#each await tags as tag}
 			<button class="badge rounded-3 px-1" onclick={() => (selectedTag = tag)}>
@@ -32,64 +39,20 @@
 			</button>
 		{/each}
 	</div>
-{/snippet}
+</Slot>
 
 <Column gap="7">
 	<div class="row row-cols-4 justify-content-center gx-4 gy-8">
+		{#each pinnedPosts as post}
+			<div class="col h-100">
+				<Post {post} />
+			</div>
+		{/each}
+	</div>
+	<div class="row row-cols-4 justify-content-center gx-4 gy-8">
 		{#each filteredPosts as post}
 			<div class="col h-100">
-				<div class="d-flex flex-column gap-1">
-					<div class="d-flex align-items-center justify-content-between">
-						<small class="fw-bold">
-							{new Date(post.created).toLocaleDateString('ru-Ru', { dateStyle: 'long' })}
-						</small>
-						<div>
-							<button class="badge rounded-3 fw-bold px-1">#{post?.tags?.length}</button>
-						</div>
-					</div>
-					{#if post?.cover?.video}
-						{#if post.cover.video?.includes('https://rutube.ru')}
-							<iframe
-								title=""
-								class="w-100 ratio-16x9 rounded-3 border-0"
-								src={post.cover.video.replace('/video/', '/play/embed/')}
-								allowfullscreen
-							></iframe>
-						{/if}
-						{#if post.cover.video?.includes('https://youtu.be')}
-							<iframe
-								title=""
-								class="w-100 ratio-16x9 rounded-3 border-0"
-								src={post.cover.video.replace('/youtu.be/', '/www.youtube.com/embed/')}
-								allowfullscreen
-							></iframe>
-						{/if}
-						{#if post.cover.video?.includes('https://vkvideo.ru')}
-							<iframe
-								title=""
-								class="w-100 ratio-16x9 rounded-3 border-0"
-								src={post.cover.video
-									.replace('vkvideo.ru/video', 'vkvideo.ru/videoext.php?oid=')
-									.replace('_', '&id=')
-									.replace('videoext', 'video_ext')}
-								allowfullscreen
-							></iframe>
-						{/if}
-						{#if post.cover.video?.includes('https://vk.com')}
-							<iframe
-								title=""
-								class="w-100 ratio-16x9 rounded-3 border-0"
-								src={post.cover.video}
-								allowfullscreen
-							></iframe>
-						{/if}
-					{/if}
-
-					<div class="d-flex flex-column">
-						<div class="text-uppercase fw-bold">{@html post?.title}</div>
-						<div class="">{@html post?.description}</div>
-					</div>
-				</div>
+				<Post {post} />
 			</div>
 		{/each}
 	</div>

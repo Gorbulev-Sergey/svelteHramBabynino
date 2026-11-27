@@ -3,14 +3,14 @@
 
 	interface IProps {
 		title?: string;
-		storeItem?: Snippet<[]> | null;
+		storeSlot?: Snippet<[]> | null;
 		children?: Snippet<[]>;
 	}
-	let { title, storeItem = $bindable(), children }: IProps = $props();
+	let { title, storeSlot = $bindable(), children }: IProps = $props();
 	onMount(() => {
-		storeItem = children;
+		storeSlot = children;
 	});
 	onDestroy(() => {
-		storeItem = null;
+		storeSlot = null;
 	});
 </script>
