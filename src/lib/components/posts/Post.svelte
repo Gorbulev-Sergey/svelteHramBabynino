@@ -23,9 +23,9 @@
 
 	let postColors = $derived(
 		post.inverted
-			? 'theme-inverse   px-4 pt-2 pb-4'
+			? 'dark px-4 pt-2 pb-4'
 			: post.background
-				? `bg-${post.background} bg-20 px-4 pt-2 pb-4`
+				? `bg-${post.background} bg-10 px-4 pt-2 pb-4`
 				: ''
 	);
 </script>

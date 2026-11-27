@@ -19,7 +19,7 @@
 		href,
 		reverse = false,
 		onClick,
-		_class = 'w-100',
+		_class = 'light w-100',
 		_style
 	}: IProps = $props();
 </script>

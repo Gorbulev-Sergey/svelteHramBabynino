@@ -38,8 +38,7 @@
 
 {#snippet mainNav()}
 	{#each routes as route}
-		<a class="btn btn-sm rounded-3 bg-transparent text-uppercase px-2" href={route.url}
-			>{@html route.name}</a
+		<a class="btn btn-sm light rounded-3 text-uppercase px-2" href={route.url}>{@html route.name}</a
 		>
 	{/each}
 {/snippet}
@@ -89,7 +88,7 @@
 {/snippet}
 
 {#snippet footer()}
-	<div class="d-flex flex-column align-items-center w-100 bg-1 bg-70 p-6" style="min-height: 10em;">
+	<div class="d-flex flex-column align-items-center w-100 light p-6" style="min-height: 10em;">
 		<div class="container flex-grow-1 d-flex flex-column align-items-center flex-wrap row-gap-1">
 			<div class="flex-grow-1 d-flex flex-wrap align-items-center justify-content-center gap-1">
 				<b class="mb-0">Контакты для связи:</b>
@@ -154,7 +153,7 @@
 				Поддержать наш храм
 			</a>
 
-			<a class="btn btn-sm rounded-3 mt-2 mb-1 px-3 py-2" href="#top">
+			<a class="btn btn-sm bg-3 rounded-3 mt-2 mb-1 px-3 py-2" href="#top">
 				<div class="d-flex flex-column align-items-center justify-content-center text-center">
 					<i class="bi bi-chevron-up"></i>
 					<div>Наверх</div>
@@ -165,7 +164,7 @@
 {/snippet}
 
 <div class="sticky-top w-100">
-	<div class="d-flex flex-column px-4 py-2 bg-1 bg-70" style="backdrop-filter: blur(1em);">
+	<div class="d-flex flex-column px-4 py-2 light" style="backdrop-filter: blur(1em);">
 		<div class="d-flex align-items-center px-1">
 			<div class="d-flex align-items-center gap-1 flex-wrap">
 				<a class="btn bg-transparent rounded-3 px-2" href="/">
@@ -196,10 +195,3 @@
 {@render footer?.()}
 
 <Toaster />
-
-<style>
-	/* Настройка цветов фона для светлой и темной темы */
-	:global(:root) {
-		--bs-bg-body: light-dark(var(--bs-white), var(--bs-gray-800));
-	}
-</style>

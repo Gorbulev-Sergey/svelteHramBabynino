@@ -9,7 +9,6 @@
 	import { STORE } from '#lib/settings/store.svelte.ts';
 	import { goto, refreshAll } from '$app/navigation';
 	import { Toaster } from '@gorbulevsv/toaster';
-	import Slot from '#lib/components/Slot.svelte';
 	import type { Snippet } from 'svelte';
 
 	const routes: IRoute[] = [
@@ -93,11 +92,11 @@
 <div class="w-100">
 	<aside
 		bind:clientWidth={STORE.ADMIN.sidebar.width}
-		class="position-fixed bg-3"
+		class="position-fixed light"
 		style="height: {STORE.ADMIN.sidebar.height}dvh;"
 	>
 		<div
-			class="d-flex flex-column p-2 pt-1 bg-1 bg-70 gap-1 h-100"
+			class="d-flex flex-column p-2 pt-1 light shadow-sm gap-1 h-100"
 			style="backdrop-filter: blur(1em);"
 		>
 			<div class="d-flex align-items-center">
@@ -108,7 +107,7 @@
 				{/if}
 				<button
 					title="Свернуть/Развернуть панель"
-					class="btn rounded-3 {STORE.ADMIN.sidebar.isOpen ? '' : 'btn-solid theme-secondary'}"
+					class="btn rounded-3 {STORE.ADMIN.sidebar.isOpen ? 'light' : 'btn-solid theme-secondary'}"
 					onclick={() => (STORE.ADMIN.sidebar.isOpen = !STORE.ADMIN.sidebar.isOpen)}
 				>
 					<i class="bi bi-arrows-{STORE.ADMIN.sidebar.isOpen ? 'collapse' : 'expand'}-vertical"></i>
@@ -131,14 +130,14 @@
 						icon="<i class='bi bi-box-arrow-left'></i>"
 						href="/"
 						isOpen={STORE.ADMIN.sidebar.isOpen}
-						_class="{STORE.ADMIN.sidebar.isOpen ? '' : 'btn-solid theme-secondary'} w-100"
+						_class="{STORE.ADMIN.sidebar.isOpen ? 'light' : 'btn-solid theme-secondary'} w-100"
 					/>
 				</div>
 			</div>
 		</div>
 	</aside>
 	<main class="flex-grow-1" style="margin-left: {STORE.ADMIN.sidebar.width}px;">
-		<div class="sticky-top px-4 pt-3 pb-1 bg-1 w-100" style="margin-left: .25px;">
+		<div class="sticky-top px-4 pt-3 pb-1 light w-100" style="margin-left: .25px;">
 			<div class="d-flex align-items-center gap-1 w-100">
 				<div class="d-flex align-items-center gap-2">
 					{@render breadCrumb?.()}
@@ -149,7 +148,7 @@
 				{@render addNav?.()}
 			</div>
 
-			{#if STORE.panels?.sub}
+			{#if sub}
 				<div class="px-0 py-1">
 					{@render sub?.()}
 				</div>
@@ -163,11 +162,3 @@
 </div>
 
 <Toaster />
-
-<style>
-	/* Настройка цветов фона для светлой и темной темы */
-	:global(:root) {
-		--bs-bg-body: light-dark(var(--bs-white), var(--bs-pewter-700));
-		--bs-bg-1: light-dark(var(--bs-pewter-025), var(--bs-pewter-800));
-	}
-</style>
