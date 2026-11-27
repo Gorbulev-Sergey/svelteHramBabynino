@@ -11,7 +11,7 @@
 	}
 
 	:global(.light) {
-		background: light-dark(oklch(0.98 0.0018 250/0.9), oklch(0.216 0.0072 245/0.95));
+		background: light-dark(oklch(0.98 0.0018 245/0.9), oklch(0.216 0.0072 245/0.9));
 		color: light-dark(var(--bs-gray-900), var(--bs-gray-025));
 		backdrop-filter: blur(1em);
 	}
@@ -21,8 +21,9 @@
 	}
 
 	:global(.dark) {
-		background: light-dark(var(--bs-gray-800), var(--bs-gray-100));
+		background: light-dark(oklch(0.216 0.0072 245/0.9), oklch(0.98 0.0018 245/0.9));
 		color: light-dark(var(--bs-white), var(--bs-gray-900));
+		backdrop-filter: blur(1em);
 	}
 	:global(.btn.dark:hover) {
 		background: light-dark(var(--bs-black), var(--bs-gray-200));

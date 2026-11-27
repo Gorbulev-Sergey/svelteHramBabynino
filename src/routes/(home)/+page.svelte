@@ -33,9 +33,14 @@
 		<BreadCrumb {routes} />
 	{/snippet}
 	{#snippet sub()}
-		<div class="d-flex align-items-center justify-content-start gap-2 flex-wrap">
+		<div class="d-flex align-items-center justify-content-start gap-1 flex-wrap">
 			{#each await tags as tag}
-				<button class="badge rounded-3 px-1" onclick={() => (selectedTag = tag)}>
+				<button
+					class="badge btn btn-xs fw-medium border-0 {selectedTag.name === tag.name
+						? 'bg-3 fw-bold'
+						: 'light'} rounded-3 px-2 py-0"
+					onclick={() => (selectedTag = tag)}
+				>
 					#{tag.name}
 				</button>
 			{/each}
