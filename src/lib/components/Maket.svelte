@@ -6,10 +6,11 @@
 	import type { IRoute } from '#lib/models/Route.ts';
 	import { Toaster } from '@gorbulevsv/toaster';
 	import type { Snippet } from 'svelte';
+	import { page } from '$app/state';
 
 	const routes: IRoute[] = [
 		{ name: 'Главная', url: '/' },
-		{ name: 'Расписание', url: '/' }
+		{ name: 'Расписание', url: '/schedule' }
 	];
 
 	function toggleTheme() {
@@ -38,7 +39,11 @@
 
 {#snippet mainNav()}
 	{#each routes as route}
-		<a class="btn btn-sm light rounded-3 text-uppercase px-2" href={route.url}>{@html route.name}</a
+		<a
+			class="btn btn-sm light {page.url.pathname === route.url
+				? 'fw-bold'
+				: ''} rounded-3 text-uppercase px-2"
+			href={route.url}>{@html route.name}</a
 		>
 	{/each}
 {/snippet}
