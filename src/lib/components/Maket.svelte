@@ -7,6 +7,10 @@
 	import { Toaster } from '@gorbulevsv/toaster';
 	import type { Snippet } from 'svelte';
 	import { page } from '$app/state';
+	import { auth } from '#lib/settings/firebase.ts';
+	import { logInSession, logOutSession } from '#lib/remoutes/firebase-admin.remote.ts';
+	import { goto, refreshAll } from '$app/navigation';
+	import { getIdToken, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
 	const routes: IRoute[] = [
 		{ name: 'Публикации', url: '/' },
