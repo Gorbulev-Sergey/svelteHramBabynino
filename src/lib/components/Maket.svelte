@@ -1,19 +1,11 @@
 <script lang="ts">
 	import favicon from '#lib/assets/favicon.png';
 	import max from '#lib/assets/max.svg';
-	import type { LayoutProps } from './$types';
 	import 'bootstrap/dist/css/bootstrap.min.css';
 	import 'bootstrap-icons/font/bootstrap-icons.min.css';
-	import { STORE } from '#lib/settings/store.svelte.ts';
 	import type { IRoute } from '#lib/models/Route.ts';
-	import { auth } from '#lib/settings/firebase.ts';
-	import { logInSession, logOutSession } from '#lib/remoutes/firebase-admin.remote.ts';
-	import { goto, refreshAll } from '$app/navigation';
-	import { signInWithPopup, GoogleAuthProvider, getIdToken } from 'firebase/auth';
 	import { Toaster } from '@gorbulevsv/toaster';
-	import Slot from '#lib/components/Slot.svelte';
-
-	let { children, data }: LayoutProps = $props();
+	import type { Snippet } from 'svelte';
 
 	const routes: IRoute[] = [
 		{ name: 'Главная', url: '/' },
@@ -28,6 +20,15 @@
 		);
 		cookieStore.set('theme', theme?.getAttribute('data-bs-theme') || 'light');
 	}
+
+	interface IProps {
+		breadCrumb?: Snippet;
+		sub?: Snippet;
+		children?: Snippet;
+		data: any;
+	}
+
+	let { breadCrumb, sub, children, data }: IProps = $props();
 </script>
 
 <svelte:head>
@@ -35,15 +36,15 @@
 	<title>Храм Вознесения Господня</title>
 </svelte:head>
 
-<Slot title="mainNav" bind:storeSlot={STORE.panels.mainNav}>
+{#snippet mainNav()}
 	{#each routes as route}
 		<a class="btn btn-sm rounded-3 bg-transparent text-uppercase px-2" href={route.url}
 			>{@html route.name}</a
 		>
 	{/each}
-</Slot>
+{/snippet}
 
-<Slot title="addNav" bind:storeSlot={STORE.panels.addNav}>
+{#snippet addNav()}
 	<button
 		title=""
 		class="btn-icon btn-sm border-0 rounded-3"
@@ -85,9 +86,9 @@
 			>
 		{/if}
 	</div>
-</Slot>
+{/snippet}
 
-<Slot title="footer" bind:storeSlot={STORE.panels.footer}>
+{#snippet footer()}
 	<div class="d-flex flex-column align-items-center w-100 bg-1 bg-70 p-6" style="min-height: 10em;">
 		<div class="container flex-grow-1 d-flex flex-column align-items-center flex-wrap row-gap-1">
 			<div class="flex-grow-1 d-flex flex-wrap align-items-center justify-content-center gap-1">
@@ -161,7 +162,7 @@
 			</a>
 		</div>
 	</div>
-</Slot>
+{/snippet}
 
 <div class="sticky-top w-100">
 	<div class="d-flex flex-column px-4 py-2 bg-1 bg-70" style="backdrop-filter: blur(1em);">
@@ -170,20 +171,20 @@
 				<a class="btn bg-transparent rounded-3 px-2" href="/">
 					<b class="fg-danger text-uppercase">Храм Вознесения Господня</b>
 				</a>
-				{@render STORE.panels.breadCrumb?.()}
+				{@render breadCrumb?.()}
 			</div>
 			<div class="flex-grow-1 d-flex align-items-center justify-content-end flex-wrap gap-1">
 				<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
 					<i class="bi bi-sun"></i>
 				</button>
 
-				{@render STORE.panels.mainNav?.()}
-				{@render STORE.panels.addNav?.()}
+				{@render mainNav?.()}
+				{@render addNav?.()}
 			</div>
 		</div>
-		{#if STORE.panels.sub}
+		{#if sub}
 			<div class="px-3 pt-1 pb-2">
-				{@render STORE.panels.sub?.()}
+				{@render sub?.()}
 			</div>
 		{/if}
 	</div>
@@ -192,7 +193,7 @@
 	{@render children?.()}
 </div>
 
-{@render STORE.panels.footer?.()}
+{@render footer?.()}
 
 <Toaster />
 
