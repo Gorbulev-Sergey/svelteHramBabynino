@@ -9,7 +9,7 @@
 	import { page } from '$app/state';
 
 	const routes: IRoute[] = [
-		{ name: 'Главная', url: '/' },
+		{ name: 'Публикации', url: '/' },
 		{ name: 'Расписание', url: '/schedule' }
 	];
 
@@ -149,11 +149,7 @@
 				год
 			</div>
 
-			<a
-				href="https://tips.tips/000469265"
-				class="btn btn-solid theme-inverse rounded-3 mt-1"
-				target="_blank"
-			>
+			<a href="https://tips.tips/000469265" class="btn dark rounded-3 mt-1" target="_blank">
 				Поддержать наш храм
 			</a>
 
