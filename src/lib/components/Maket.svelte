@@ -45,10 +45,9 @@
 
 {#snippet addNav()}
 	<button
-		title=""
-		class="btn-icon btn-sm border-0 rounded-3"
+		title="пользователь"
+		class="btn px-1 btn-sm light border-0 rounded-3"
 		data-bs-toggle="menu"
-		aria-expanded="false"
 	>
 		{#if data.user && data.user.picture}
 			<span class="avatar avatar-xs">
@@ -164,19 +163,18 @@
 {/snippet}
 
 <div class="sticky-top w-100">
-	<div class="d-flex flex-column px-4 py-2 light" style="backdrop-filter: blur(1em);">
+	<div class="d-flex flex-column px-4 py-2 light">
 		<div class="d-flex align-items-center px-1">
-			<div class="d-flex align-items-center gap-1 flex-wrap">
+			<div class="d-flex align-items-center gap-0 flex-wrap">
 				<a class="btn bg-transparent rounded-3 px-2" href="/">
 					<b class="fg-danger text-uppercase">Храм Вознесения Господня</b>
 				</a>
 				{@render breadCrumb?.()}
 			</div>
 			<div class="flex-grow-1 d-flex align-items-center justify-content-end flex-wrap gap-1">
-				<button title="Тема" class="btn btn-sm rounded-3" onclick={toggleTheme}>
+				<button title="Тема" class="btn btn-sm light rounded-3" onclick={toggleTheme}>
 					<i class="bi bi-sun"></i>
 				</button>
-
 				{@render mainNav?.()}
 				{@render addNav?.()}
 			</div>

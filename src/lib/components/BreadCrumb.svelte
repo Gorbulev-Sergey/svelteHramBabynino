@@ -6,7 +6,7 @@
 	let { routes, hasStartArrow = true }: IProps = $props();
 </script>
 
-<div class="d-flex align-items-center gap-2">
+<div class="d-flex align-items-center gap-1">
 	{#each routes as { url, title }, i}
 		{#if hasStartArrow || i !== 0}
 			<div>
